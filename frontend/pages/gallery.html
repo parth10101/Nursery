@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - Matoshree Nursery</title>
+    <meta name="description" content="Explore our beautiful collection of plants, nursery, and garden designs at Matoshree Nursery.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles */
+        :root {
+            --primary-color: #2e7d32;
+            --primary-light: #60ad5e;
+            --primary-dark: #1b5e20;
+            --text-light: #f5f5f5;
+            --text-dark: #333;
+            --bg-light: #f9f9f9;
+            --nav-bg: #ffffff;
+            --nav-text: #1b5e20;
+            --nav-hover: #2e7d32;
+            --nav-active: #2e7d32;
+            --transition: all 0.3s ease;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            --border-radius: 4px;
+        }
+
+        
+        /* Ensure hero section starts below header */
+        .gallery-page .gallery-hero {
+            margin-top: 0;
+        }
+        
+        /* Mobile menu styles */
+        .gallery-page .hamburger {
+            display: none;
+            cursor: pointer;
+            z-index: 1001;
+            padding: 10px;
+        }
+        
+        .gallery-page .hamburger .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            transition: all 0.3s ease-in-out;
+            background-color: #2c3e50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #2e7d32;
+            text-decoration: none;
+            padding: 0.6rem 0.75rem;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            position: relative;
+            transition: var(--transition);
+            letter-spacing: 0.3px;
+        }
+
+        .nav-link.contact-btn {
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            margin-left: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link.contact-btn:hover {
+            background-color: #164d1a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-link.active:not(.contact-btn)::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 1rem;
+            right: 1rem;
+            height: 2px;
+            background-color: var(--primary-dark);
+            border-radius: 2px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .logo img {
+            height: 180px;
+            width: auto;
+            transition: all 0.3s ease;
+        }
+
+        .logo-text {
+            margin-left: 12px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Hero Section */
+        .gallery-hero {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding-top: 160px; /* Space for the transparent, fixed navbar */
+            padding-bottom: 2rem;
+        }
+
+        .gallery-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            z-index: 1;
+            filter: brightness(1) contrast(1);
+        }
+
+        .hero-content {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            /* Height auto instead of 100% to support padding */
+        }
+
+        .hero-content h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+            padding: 10px 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        /* Page-scoped override: make navbar links white only on gallery page */
+        body.gallery-page .nav-link {
+            color: #ffffff !important;
+        }
+
+        body.gallery-page .nav-link:hover,
+        body.gallery-page .nav-link.active {
+            color: #ffffff !important;
+        }
+
+        .gallery-page .hamburger .bar {
+            background-color: #2c3e50 !important;
+        }
+
+        /* Make hamburger visible over video on gallery page (white bars), and switch to dark when active */
+        .gallery-page .hamburger .bar {
+            background-color: #ffffff !important;
+        }
+
+        .gallery-page .hamburger.active .bar {
+            background-color: #2c3e50 !important;
+        }
+
+        /* Nudge navbar links slightly left on gallery page only */
+        body.gallery-page .nav {
+            padding-right: 20px !important;
+        }
+
+        
+
+        /* Gallery Section */
+        .gallery-section {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 0;
+        }
+
+        @media (min-width: 769px) {
+            .header .container {
+                justify-content: flex-start;
+            }
+
+            .nav {
+                margin-left: auto;
+                padding-right: 40px;
+            }
+        }
+
+.slider-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    padding: 2rem 1rem;
+}
+
+.slider {
+    position: relative;
+    width: 100%;
+    height: 65vh;
+    min-height: 420px;
+    max-height: 700px;
+    overflow: hidden;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    background-color: #000;
+}
+
+.slider-track {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* Slides */
+.slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slide.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+/* Images */
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Slide Overlay Content */
+.slide-content {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    /* Increase padding-bottom to separate dots from text! */
+    padding: 3rem 1.5rem 4rem; 
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.9) 0%,
+        rgba(0, 0, 0, 0.4) 60%,
+        transparent 100%
+    );
+    color: #ffffff;
+    text-align: center;
+    z-index: 4;
+}
+
+.slide-content h3 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+}
+
+.slide-content p {
+    font-size: 0.95rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Navigation Arrows */
+.slider-nav {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.slider-btn {
+    pointer-events: auto;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.slider-btn:hover {
+    background: rgba(0, 0, 0, 0.65);
+    transform: scale(1.08);
+}
+
+.slider-btn i {
+    font-size: 1.4rem;
+}
+
+/* Dots Navigation */
+.slider-dots {
+    position: absolute;
+    bottom: 18px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    z-index: 6;
+}
+
+.dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dot.active {
+    background: #ffffff;
+    transform: scale(1.3);
+}
+
+
+
+@media (max-width: 992px) {
+    .slider {
+        height: 55vh;
+        min-height: 380px;
+    }
+}
+
+@media (max-width: 768px) {
+    .slider {
+        height: 50vh;
+        min-height: 320px;
+        border-radius: 14px;
+    }
+
+    .slide-content h3 {
+        font-size: 1.3rem;
+    }
+
+    .slide-content p {
+        font-size: 0.85rem;
+    }
+
+    .slider-btn {
+        width: 42px;
+        height: 42px;
+    }
+}
+
+/* Additional mobile tweaks for better responsiveness on small devices */
+@media (max-width: 480px) {
+    .gallery-hero {
+        height: 60vh;
+        min-height: 320px;
+        padding-top: 40px;
+        align-items: flex-start;
+        justify-content: center;
+    }
+
+    .logo img {
+        height: 64px;
+        width: auto;
+    }
+
+    .hero-content {
+        padding: 0 12px;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    body.gallery-page .nav .nav-links {
+        transform: none;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .gallery-page .hamburger {
+        display: block;
+    }
+
+    .slider {
+        height: 40vh;
+        min-height: 220px;
+        border-radius: 10px;
+        padding: 0.5rem;
+    }
+
+    .slide-content {
+        padding: 1.5rem 0.8rem 3rem; /* Still protect the dots space on mobile */
+        bottom: 0;
+        text-align: center;
+    }
+
+    .slide-content h3 {
+        font-size: 1.05rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .slide-content p {
+        font-size: 0.75rem;
+        max-width: none;
+    }
+
+    .slider-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    .slider-dots {
+        bottom: 10px;
+        gap: 8px;
+    }
+
+    .container {
+        padding: 0 12px;
+    }
+
+    .logo-text { display:none; }
+}
+
+header.header {
+    position: relative;
+    z-index: 10000;
+    background: transparent;
+}
+
+@media (min-width: 769px) {
+    header.header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: transparent;
+        z-index: 10000;
+        padding-top: 12px;
+    }
+
+    /* Keep nav inline on desktop and make sure links contrast over hero */
+    .gallery-page .nav {
+        background: transparent;
+    }
+    .gallery-page .nav .nav-links {
+        transform: translateX(105px);
+        display: flex !important;
+        position: static;
+        background: transparent;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 768px) {
+    header.header {
+        /* Keep header fixed on mobile so it sits above page content */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: rgba(0,0,0,0.55);
+        z-index: 10001;
+    }
+}
+
+
+
+/* Hamburger active state (X icon) */
+.hamburger.active .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+.hamburger.active .bar:nth-child(2) {
+    opacity: 0;
+}
+.hamburger.active .bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+@media (max-width: 576px) {
+    .slider {
+        height: 45vh;
+        min-height: 260px;
+        border-radius: 10px;
+    }
+
+    .slider-btn {
+        width: 38px;
+        height: 38px;
+    }
+
+    .slider-btn i {
+        font-size: 1.2rem;
+    }
+}
+
+</style>
+
+</head>
+<body class="gallery-page">
+    <!-- Header & Navigation -->
+    <header class="header" id="header">
+        <div class="container">
+            <div class="logo-container">
+                <a href="index.html" class="logo">
+                    <img src="images/logo/logo.png" alt="Matoshree Nursery" class="logo-img">
+                </a>
+            </div>
+            <nav class="nav" id="navbar">
+                <ul class="nav-links">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="plants.html" class="nav-link">Plants & Products</a></li>
+                    <li><a href="gallery.html" class="nav-link active">Gallery</a></li>
+                    <li><a href="about.html" class="nav-link">About Us</a></li>
+                    <li><a href="services.html" class="nav-link">Services</a></li>
+                    <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+                </ul>
+                <div class="hamburger" id="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section with Video and Slider -->
+    <section class="gallery-hero">
+        <!-- Background Video -->
+        <video autoplay muted loop playsinline class="hero-video">
+            <source src="gallery_herp.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        
+        <!-- Slider Container -->
+        <div class="hero-content">
+            <h1 class="gallery-title">Our Gallery</h1>
+            <div class="slider-container">
+                <div class="slider">
+                    <div class="slider-track" id="sliderTrack">
+                        <!-- Slides will be dynamically inserted here by JavaScript -->
+                    </div>
+                    <div class="slider-nav">
+                        <button class="slider-btn" id="prevBtn" aria-label="Previous slide">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="slider-btn" id="nextBtn" aria-label="Next slide">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    <div class="slider-dots" id="sliderDots">
+                        <!-- Dots will be dynamically inserted here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Default fallback gallery data
+        const fallbackGalleryData = [
+            {
+                image: 'images/gallery/11.jpg',
+                title: 'Lush Garden View',
+                description: 'Our beautiful garden in full bloom during spring season.'
+            },
+            {
+                image: 'images/gallery/22.jpg',
+                title: 'Plant Nursery',
+                description: 'Healthy saplings growing in our state-of-the-art nursery.'
+            },
+            {
+                image: 'images/gallery/3.jpg',
+                title: 'Modern Greenhouse',
+                description: 'Our temperature-controlled greenhouse for delicate plants.'
+            },
+            {
+                image: 'images/gallery/4.jpg',
+                title: 'Professional Landscaping',
+                description: 'Expertly designed landscapes for your dream garden.'
+            },
+            {
+                image: 'images/gallery/5.webp',
+                title: 'Rare Plant Collection',
+                description: 'Explore our exclusive collection of rare and exotic plants.'
+            }
+        ];
+
+        let galleryData = [];
+
+        // Initialize slider
+        document.addEventListener('DOMContentLoaded', async function() {
+            // First, attempt to fetch gallery data from the server
+            // Dynamically detect base URL so Live Server renders images correctly from the backend
+            const BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && window.location.port !== '5000' ? 'http://localhost:5000' : '';
+            
+            try {
+                const API_URL = BASE_URL ? `${BASE_URL}/api` : '/api';
+                const res = await fetch(`${API_URL}/gallery`);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.length > 0) {
+                        // Map server response to expected format, ensuring correct image path!
+                        galleryData = data.map(item => ({
+                            image: item.url.startsWith('http') ? item.url : `${BASE_URL}${item.url}`,
+                            title: item.title,
+                            description: item.description
+                        }));
+                    }
+                }
+            } catch (err) {
+                console.error('Failed to load gallery from server, using fallback', err);
+            }
+
+            // Use fallbacks if server returns no images
+            if (galleryData.length === 0) {
+                galleryData = fallbackGalleryData;
+            }
+
+            const sliderTrack = document.getElementById('sliderTrack');
+            const sliderDots = document.getElementById('sliderDots');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            let currentSlide = 0;
+            let autoSlideInterval;
+            const slideCount = galleryData.length;
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            // Create slides
+            function createSlides() {
+                // Clear existing content
+                sliderTrack.innerHTML = '';
+                sliderDots.innerHTML = '';
+                
+                // Create slides and dots
+                galleryData.forEach((slide, index) => {
+                    // Create slide
+                    const slideElement = document.createElement('div');
+                    slideElement.className = `slide ${index === 0 ? 'active' : ''}`;
+                    slideElement.innerHTML = `
+                        <img src="${slide.image}" alt="${slide.title}"
+                             onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'800\\' height=\\'600\\'%3E%3Crect fill=\\'%23f1f5f9\\' width=\\'100%25\\' height=\\'100%25\\'/%3E%3Ctext x=\\'50%25\\' y=\\'50%25\\' fill=\\'%2394a3b8\\' font-size=\\'24\\' text-anchor=\\'middle\\' dy=\\'.3em\\'%3ENo Preview%3C/text%3E%3C/svg%3E'">
+                        <div class="slide-content">
+                            <h3>${slide.title}</h3>
+                            <p>${slide.description}</p>
+                        </div>
+                    `;
+                    sliderTrack.appendChild(slideElement);
+
+                    // Create dot
+                    const dot = document.createElement('div');
+                    dot.className = `dot ${index === 0 ? 'active' : ''}`;
+                    dot.setAttribute('data-index', index);
+                    sliderDots.appendChild(dot);
+                });
+
+                // Update dots event listeners
+                document.querySelectorAll('.dot').forEach(dot => {
+                    dot.addEventListener('click', function() {
+                        goToSlide(parseInt(this.getAttribute('data-index')));
+                    });
+                });
+            }
+
+            // Go to specific slide
+            function goToSlide(index) {
+                const slides = document.querySelectorAll('.slide');
+                const dots = document.querySelectorAll('.dot');
+                
+                // Update current slide
+                currentSlide = (index + slideCount) % slideCount;
+                
+                // Update slides
+                slides.forEach((slide, i) => {
+                    slide.classList.toggle('active', i === currentSlide);
+                });
+                
+                // Update dots
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === currentSlide);
+                });
+                
+                // Reset auto-slide timer
+                resetAutoSlide();
+            }
+
+            // Next slide
+            function nextSlide() {
+                goToSlide(currentSlide + 1);
+            }
+
+            // Previous slide
+            function prevSlide() {
+                goToSlide(currentSlide - 1);
+            }
+
+            // Auto-slide functionality
+            function startAutoSlide() {
+                autoSlideInterval = setInterval(nextSlide, 5000);
+            }
+
+            function resetAutoSlide() {
+                clearInterval(autoSlideInterval);
+                startAutoSlide();
+            }
+
+            // Touch events for mobile swipe
+            function handleTouchStart(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }
+
+            function handleTouchEnd(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }
+
+            function handleSwipe() {
+                const swipeThreshold = 50;
+                const difference = touchStartX - touchEndX;
+
+                if (Math.abs(difference) > swipeThreshold) {
+                    if (difference > 0) {
+                        nextSlide();
+                    } else {
+                        prevSlide();
+                    }
+                }
+            }
+
+            // Initialize the slider
+            createSlides();
+            
+            // Add event listeners
+            prevBtn.addEventListener('click', prevSlide);
+            nextBtn.addEventListener('click', nextSlide);
+            
+            // Touch events
+            sliderTrack.addEventListener('touchstart', handleTouchStart, { passive: true });
+            sliderTrack.addEventListener('touchend', handleTouchEnd, { passive: true });
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    prevSlide();
+                } else if (e.key === 'ArrowRight') {
+                    nextSlide();
+                }
+            });
+            
+            // Start auto-slide
+            startAutoSlide();
+            
+            // Pause auto-slide on hover
+            sliderTrack.addEventListener('mouseenter', () => {
+                clearInterval(autoSlideInterval);
+            });
+            
+            sliderTrack.addEventListener('mouseleave', () => {
+                resetAutoSlide();
+            });
+        });
+    </script>
+
+    <script>
+        // Mobile hamburger toggle for gallery page with ARIA support
+        document.addEventListener('DOMContentLoaded', function () {
+            const hamburger = document.getElementById('hamburger');
+            const nav = document.getElementById('navbar');
+            const navLinks = nav ? nav.querySelectorAll('.nav-link') : [];
+            const navMenu = document.querySelector('.nav-links');
+            const body = document.body;
+
+            if (!hamburger || !nav) return;
+
+            // accessibility attributes
+            hamburger.setAttribute('role', 'button');
+            hamburger.setAttribute('aria-controls', 'navbar');
+            hamburger.setAttribute('aria-expanded', 'false');
+
+            function setExpanded(val) {
+                hamburger.setAttribute('aria-expanded', val ? 'true' : 'false');
+            }
+
+            function openNav() {
+                navMenu.classList.add('active');
+                // show and lock background scroll
+                navMenu.style.display = 'flex';
+                body.style.overflow = 'hidden';
+                hamburger.classList.add('active');
+                setExpanded(true);
+            }
+
+            function closeNav() {
+                navMenu.classList.remove('active');
+                // restore
+                navMenu.style.display = '';
+                body.style.overflow = '';
+                hamburger.classList.remove('active');
+                setExpanded(false);
+            }
+
+            function toggleNav(e) {
+                e.stopPropagation();
+                if (navMenu.classList.contains('active')) {
+                    closeNav();
+                } else {
+                    openNav();
+                }
+            }
+
+            // Toggle mobile menu
+            hamburger.addEventListener('click', toggleNav);
+
+            // Close menu when clicking on a nav link
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    closeNav();
+                    hamburger.classList.remove('active');
+                });
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!nav.contains(e.target) && !hamburger.contains(e.target)) {
+                    closeNav();
+                    hamburger.classList.remove('active');
+                }
+            });
+
+            // Handle window resize
+            function handleResize() {
+                if (window.innerWidth > 768) {
+                    // Reset styles for desktop
+                    closeNav();
+                    // allow stylesheet to control layout
+                    if (navMenu) navMenu.style.display = '';
+                    body.style.overflow = '';
+                } else {
+                    // On mobile leave control to CSS; clear inline display so classes work
+                    if (navMenu && !navMenu.classList.contains('active')) navMenu.style.display = '';
+                }
+            }
+
+            // Add resize listener
+            window.addEventListener('resize', handleResize);
+            
+            // Initial check
+            handleResize();
+            
+            // Close on ESC
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') closeNav();
+            });
+            
+            // Close menu when viewport grows to desktop to avoid stale open state
+            window.addEventListener('resize', function () {
+                if (window.innerWidth > 768) {
+                    closeNav();
+                    // clear inline style so desktop CSS controls layout
+                    if (navMenu) navMenu.style.display = '';
+                    hamburger.classList.remove('active');
+                }
+            });
+        });
+    </script>
+
+    <!-- Footer (Reuse from index.html) -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <img src="images/logo/logo.png" alt="Matoshree Nursery" class="footer-logo-img">
+                    </div>
+                    <p>Growing green, nurturing nature. Your trusted partner for all your gardening needs.</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/profile.php?id=100076559992560&sk=about_places" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/matoshreenursery?igsh=MTZ4eTRrM3QzMTRsMw==" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/917477778840" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="plants.html">Plants & Products</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="index.html#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 1, Trambakeshwar Rd, Nashik, Mahiravni, Maharashtra 422213</li>
+                        <li><i class="fas fa-phone"></i> +1 234 567 8900</li>
+                        <li><i class="fas fa-envelope"></i> info@matoshreenursery.com</li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h3>Get in Touch</h3>
+                    <p>Have questions about our plants, services, or pricing? We'd love to hear from you!</p>
+                    <p style="margin-top: 0.75rem; font-size: 0.9rem;">🌿 Visit our <a href="index.html#contact" style="color: var(--primary-color); font-weight: 600; text-decoration: none;">Send Message</a> section to reach out directly.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

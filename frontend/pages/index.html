@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matoshree Nursery - Premium Nursery & Garden Center</title>
+    <meta name="description" content="Matoshree Nursery - Your trusted source for quality plants, gardening supplies, and landscaping services. We grow with care, nurture with love.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geom:ital,wght@0,300..900;1,300..900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        #leaf-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <!-- Leaf Animation Canvas -->
+    <canvas id="leaf-canvas"></canvas>
+    
+    <!-- Header & Navigation -->
+    <header class="header" id="header">
+        <div class="container">
+            <div class="logo-container">
+                <a href="index.html" class="logo">
+                    <img src="images/logo/logo.png" alt="Matoshree Nursery" class="logo-img">
+                </a>
+            </div>
+            <nav class="nav" id="navbar">
+                <ul class="nav-links">
+                    <li><a href="index.html" class="nav-link active">Home</a></li>
+                    <li><a href="plants.html" class="nav-link">Plants & Products</a></li>
+                    <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                    <li><a href="about.html" class="nav-link">About Us</a></li>
+                    <li><a href="services.html" class="nav-link">Services</a></li>
+                    <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+                </ul>
+                <div class="hamburger" id="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="video-container">
+            <video autoplay muted loop playsinline id="hero-video" poster="images/hero-fallback.jpg">
+                <source src="nursery_video.mp4" type="video/mp4">
+                <!-- Fallback image will be shown if video can't load -->
+                <img src="images/hero-fallback.jpg" alt="Nursery background" style="width: 100%; height: 100%; object-fit: cover;">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="hero-content">
+            <div class="hero-text-wrapper">
+                <h1 id="heroTitle" class="split-text">
+                    Matoshree Nursery
+                    Growing Green, Nurturing Nature
+                </h1>
+                <p>Discover the beauty of nature with our premium quality plants and expert gardening solutions</p>
+                <div class="cta-buttons">
+                    <a href="plants.html" class="btn btn-primary">Explore Plants</a>
+                    <a href="#contact" class="btn btn-secondary">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>What Our Customers Say</h2>
+                <p>Real experiences from happy customers</p>
+            </div>
+            <div class="testimonials-slider-container">
+                <div class="testimonials-slider-track" id="testimonialsSliderTrack">
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <div class="testimonial-quote">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <p class="testimonial-text">"I've been buying plants from Matoshree Nursery for over 2 years now. The quality is exceptional and their customer service is outstanding. Highly recommended!"</p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="author-info">
+                                    <h4>Rajesh Kumar</h4>
+                                    <span>Regular Customer</span>
+                                </div>
+                            </div>
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <div class="testimonial-quote">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <p class="testimonial-text">"The garden setup service was fantastic! They transformed our balcony into a beautiful green space. The team was professional and knowledgeable."</p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="author-info">
+                                    <h4>Priya Sharma</h4>
+                                    <span>Homeowner</span>
+                                </div>
+                            </div>
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <div class="testimonial-quote">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <p class="testimonial-text">"Best nursery in the city! The plants are healthy, prices are reasonable, and delivery is always on time. My office space looks amazing with their indoor plants."</p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="author-info">
+                                    <h4>Amit Patel</h4>
+                                    <span>Business Owner</span>
+                                </div>
+                            </div>
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <div class="testimonial-quote">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <p class="testimonial-text">"Their expert team helped me choose the perfect plants for my home. The care instructions were clear and all my plants are thriving. Thank you!"</p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="author-info">
+                                    <h4>Sunita Mehta</h4>
+                                    <span>Plant Enthusiast</span>
+                                </div>
+                            </div>
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <div class="testimonial-quote">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <p class="testimonial-text">"I ordered plants for bulk supply for my landscaping project. The quality exceeded my expectations and the pricing was very competitive. Great service!"</p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="author-info">
+                                    <h4>Vikram Singh</h4>
+                                    <span>Landscape Designer</span>
+                                </div>
+                            </div>
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <div class="testimonial-quote">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <p class="testimonial-text">"The monthly plant subscription is amazing! I get beautiful, healthy plants delivered to my door every month. It's been a year and I'm still a happy customer."</p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="author-info">
+                                    <h4>Neha Gupta</h4>
+                                    <span>Loyal Subscriber</span>
+                                </div>
+                            </div>
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <div class="testimonial-quote">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <p class="testimonial-text">"Their customer support is outstanding! When one of my plants had an issue, they immediately sent a replacement and provided care tips. Truly care about their customers."</p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="author-info">
+                                    <h4>Rahul Verma</h4>
+                                    <span>Plant Enthusiast</span>
+                                </div>
+                            </div>
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <div class="testimonial-quote">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <p class="testimonial-text">"The workshop on plant care was incredibly informative! I learned so much about keeping my indoor plants healthy. The experts at Matoshree Nursery are truly knowledgeable."</p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="author-info">
+                                    <h4>Ananya Desai</h4>
+                                    <span>Workshop Attendee</span>
+                                </div>
+                            </div>
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2>Get In Touch</h2>
+                <p>We'd love to hear from you</p>
+            </div>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>Contact Information</h3>
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Address</h4>
+                            <p>1, Trambakeshwar Rd, Nashik, Mahiravni, Maharashtra 422213</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4>Phone</h4>
+                            <p><a href="tel:+917387699334" style="color:inherit; text-decoration:none;">Nilesh Bodake: +91 73876 99334</a></p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p><a href="mailto:matoshreerakesh@gmail.com" style="color:inherit; text-decoration:none;">matoshreerakesh@gmail.com</a></p>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/profile.php?id=100076559992560&sk=about_places" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/matoshreenursery?igsh=MTZ4eTRrM3QzMTRsMw==" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/917477778840" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <h3>Send us a Message</h3>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" id="phone" name="phone" placeholder="Your Phone" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" name="message" rows="5" placeholder="Your Message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="map-container">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3750.0244738653155!2d73.64769577500134!3d19.965472981431038!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bddf39ee7e8e44b%3A0xdf4b4d5668f1f81b!2sMatoshree%20Nursery!5e0!3m2!1sen!2sin!4v1774784806412!5m2!1sen!2sin" 
+                width="100%" 
+                height="450" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <img src="images/logo/logo.png" alt="Matoshree Nursery" class="footer-logo-img">
+                    </div>
+                    <p>Growing green, nurturing nature. Your trusted partner for quality plants and gardening solutions.</p>
+                    <div class="footer-social">
+                        <a href="https://www.facebook.com/profile.php?id=100076559992560&sk=about_places" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/matoshreenursery?igsh=MTZ4eTRrM3QzMTRsMw==" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/917477778840" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="plants.html">Plants & Products</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="index.html#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contact Info</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 1, Trambakeshwar Rd, Nashik, Mahiravni, Maharashtra 422213</li>
+                        <li><i class="fas fa-phone"></i> <a href="tel:+917387699334" style="color:inherit; text-decoration:none;">Nilesh Bodake: +91 73876 99334</a></li>
+                        <li><i class="fas fa-envelope"></i> <a href="mailto:matoshreerakesh@gmail.com" style="color:inherit; text-decoration:none;">matoshreerakesh@gmail.com</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h3>Get in Touch</h3>
+                    <p>Have questions about our plants, services, or pricing? We'd love to hear from you!</p>
+                    <p style="margin-top: 0.75rem; font-size: 0.9rem; color: #a0aec0;">🌿 Visit our <a href="#contact" style="color: var(--primary-color); font-weight: 600; text-decoration: none;">Send Message</a> section below to reach out directly to our team.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script>
+        // Leaf Animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('leaf-canvas');
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            
+            // Position camera
+            camera.position.z = 30;
+            
+            // Create leaves
+            const leaves = [];
+            const leafCount = 20;
+            const leafGeometry = new THREE.SphereGeometry(0.5, 4, 4);
+            const leafMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0x4CAF50,
+                transparent: true,
+                opacity: 0.7
+            });
+            
+            for (let i = 0; i < leafCount; i++) {
+                const leaf = new THREE.Mesh(leafGeometry, leafMaterial);
+                
+                // Random position
+                leaf.position.x = Math.random() * 80 - 40;
+                leaf.position.y = Math.random() * 80 - 40;
+                leaf.position.z = Math.random() * 100 - 50;
+                
+                // Random size
+                const size = Math.random() * 0.8 + 0.5;
+                leaf.scale.set(size, size, size);
+                
+                // Random rotation
+                leaf.rotation.set(
+                    Math.random() * Math.PI,
+                    Math.random() * Math.PI,
+                    Math.random() * Math.PI
+                );
+                
+                // Store original position for floating effect
+                leaf.userData = {
+                    originalY: leaf.position.y,
+                    speed: Math.random() * 0.02 + 0.01,
+                    rotationSpeed: Math.random() * 0.02 + 0.01
+                };
+                
+                scene.add(leaf);
+                leaves.push(leaf);
+            }
+            
+            // Handle window resize
+            function onWindowResize() {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            }
+            
+            window.addEventListener('resize', onWindowResize, false);
+            
+            // Animation loop
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                // Animate leaves
+                const time = Date.now() * 0.001;
+                
+                leaves.forEach((leaf, i) => {
+                    // Floating up and down
+                    leaf.position.y = leaf.userData.originalY + Math.sin(time * leaf.userData.speed * 2) * 2;
+                    
+                    // Slight rotation
+                    leaf.rotation.x += leaf.userData.rotationSpeed * 0.5;
+                    leaf.rotation.y += leaf.userData.rotationSpeed * 0.3;
+                    
+                    // Reset position if leaves go off screen
+                    if (leaf.position.z > 50) {
+                        leaf.position.z = -50;
+                    }
+                });
+                
+                renderer.render(scene, camera);
+            }
+            
+            // Initial render
+            onWindowResize();
+            animate();
+        });
+    </script>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Mobile menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        
+        if (hamburger) {
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active');
+            });
+        }
+
+    </script>
+    <script type="module" src="auth.js"></script>
+</body>
+</html>

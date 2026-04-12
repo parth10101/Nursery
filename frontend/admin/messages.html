@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Messages | Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <img src="../pages/images/logo/logo.png" alt="Logo" style="height: 32px; margin-right: 0.5rem; width: auto;"> Matoshree
+            </div>
+            <ul class="nav-links">
+                <li><a href="dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="addProduct.html"><i class="fa-solid fa-plus-circle"></i> Add Product</a></li>
+                <li><a href="products.html"><i class="fa-solid fa-boxes-stacked"></i> Manage Products</a></li>
+                <li><a href="orders.html"><i class="fa-solid fa-truck-fast"></i> Orders</a></li>
+                <li><a href="messages.html" class="active"><i class="fa-solid fa-envelope"></i> Messages</a></li>
+                <li><a href="gallery-manager.html"><i class="fa-solid fa-images"></i> Gallery</a></li>
+            </ul>
+            <button class="logout-btn-sidebar" onclick="window.logoutAdmin()">
+                <i class="fa-solid fa-sign-out-alt"></i> Logout
+            </button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-title">Customer Inquiries</div>
+                <div class="user-profile">
+                    <span class="user-email" id="admin-user-email">...</span>
+                    <div class="avatar"><i class="fa-solid fa-user"></i></div>
+                </div>
+            </header>
+
+            <div class="page-content">
+                <div class="table-container">
+                    <table id="messages-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Mail</th>
+                                <th>Phone</th>
+                                <th>Message</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="messages-tbody">
+                            <tr>
+                                <td colspan="5">
+                                    <div class="empty-state">
+                                        <div class="spinner" style="margin: 0 auto;"></div>
+                                        <p>Loading messages...</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="auth.js"></script>
+    <script>
+        // Use vanilla JS polling — no module imports needed
+        // Wait for auth token to be available
+        const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && window.location.port !== '5000' ? 'http://localhost:5000/api' : '/api';
+        let pollingInterval = null;
+
+        async function fetchMessages() {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            try {
+                const res = await fetch(`${API_URL}/messages`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (res.status === 401) {
+                    // Token expired/invalid — auth.js will handle redirect
+                    return;
+                }
+
+                if (!res.ok) {
+                    console.error('Messages fetch failed:', res.status);
+                    return;
+                }
+
+                const messages = await res.json();
+                renderMessages(messages);
+            } catch (err) {
+                console.error('Error fetching messages:', err);
+            }
+        }
+
+        function renderMessages(messages) {
+            const tbody = document.getElementById('messages-tbody');
+            tbody.innerHTML = '';
+
+            if (!messages || messages.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5">
+                            <div class="empty-state">
+                                <i class="fa-solid fa-envelope-open" style="font-size:2rem; color:#ccc; margin-bottom:1rem; display:block;"></i>
+                                <h3>No Messages Yet</h3>
+                                <p>Once customers send messages from the home page, they will appear here automatically.</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            messages.forEach(msg => {
+                const tr = document.createElement('tr');
+                const date = new Date(msg.createdAt).toLocaleDateString('en-IN', {
+                    day: '2-digit', month: 'short', year: 'numeric',
+                    hour: '2-digit', minute: '2-digit'
+                });
+
+                tr.innerHTML = `
+                    <td style="font-weight: 600;">${msg.name}</td>
+                    <td>${msg.email}</td>
+                    <td>${msg.phone}</td>
+                    <td style="max-width: 350px; white-space: normal; word-break: break-word;">${msg.message}</td>
+                    <td style="font-size:0.82rem; color:#666; white-space:nowrap;">${date}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Start polling as soon as the page loads
+        // Poll every 3 seconds for near-real-time updates
+        function startPolling() {
+            fetchMessages(); // immediate first fetch
+            pollingInterval = setInterval(fetchMessages, 3000);
+        }
+
+        // Wait a brief moment for auth.js to set the token, then start
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(startPolling, 500);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Matoshree Nursery</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script type="module" src="auth.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <img src="../SDG/images/logo/logo.png" alt="Logo" style="height: 32px; margin-right: 0.5rem; width: auto;"> Matoshree
+            </div>
+            <ul class="nav-links">
+                <li><a href="dashboard.html" class="active"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="addProduct.html"><i class="fa-solid fa-plus-circle"></i> Add Product</a></li>
+                <li><a href="products.html"><i class="fa-solid fa-boxes-stacked"></i> Manage Products</a></li>
+                <li><a href="orders.html"><i class="fa-solid fa-truck-fast"></i> Orders</a></li>
+                <li><a href="messages.html"><i class="fa-solid fa-envelope"></i> Messages</a></li>
+                <li><a href="gallery-manager.html"><i class="fa-solid fa-images"></i> Gallery</a></li>
+            </ul>
+            <button class="logout-btn-sidebar" onclick="window.logoutAdmin()">
+                <i class="fa-solid fa-sign-out-alt"></i> Logout
+            </button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-title">Overview</div>
+                <div class="user-profile">
+                    <span class="user-email" id="admin-user-email">admin@...</span>
+                    <div class="avatar"><i class="fa-solid fa-user"></i></div>
+                </div>
+            </header>
+
+            <div class="page-content">
+                <div class="stats-grid">
+                    <div class="stat-card" id="card-total-products" style="cursor:pointer;">
+                        <div class="stat-icon green">
+                            <i class="fa-solid fa-seedling"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>Total Products</h3>
+                            <p id="total-products">...</p>
+                        </div>
+                    </div>
+                    <div class="stat-card" id="card-low-stock" style="cursor:pointer;">
+                        <div class="stat-icon orange">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>Low Stock</h3>
+                            <p id="low-stock">...</p>
+                        </div>
+                    </div>
+                    <div class="stat-card" id="card-categories" style="cursor:pointer;">
+                        <div class="stat-icon blue">
+                            <i class="fa-solid fa-list-ul"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>Categories</h3>
+                            <p id="total-categories">...</p>
+                        </div>
+                    </div>
+                    <div class="stat-card" id="card-messages" style="cursor:pointer;" onclick="window.location.href='messages.html'">
+                        <div class="stat-icon" style="background: #ede9fe; color: #7c3aed;">
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>New Messages</h3>
+                            <p id="unread-messages">...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-card" style="margin-top:2rem;">
+                    <h2>Welcome to Matoshree Nursery Admin</h2>
+                    <p style="color:var(--text-gray); margin-top:0.5rem;">Use the sidebar to add new plants, manage your catalog, and keep your inventory up to date.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Dashboard Detail Modal -->
+    <div class="modal" id="dashboard-modal">
+        <div class="modal-content" style="max-width:600px; max-height:85vh; display:flex; flex-direction:column;">
+            <div class="modal-header">
+                <h3 id="modal-title">Products</h3>
+                <button class="close-btn" id="modal-close-btn">&times;</button>
+            </div>
+            <div id="modal-body" style="overflow-y:auto; flex:1;"></div>
+        </div>
+    </div>
+
+    <style>
+        /* Dashboard Modal List Styles */
+        .dash-list { list-style: none; padding: 0; margin: 0; }
+        .dash-list-item {
+            display: flex; align-items: center; gap: 1rem;
+            padding: 0.85rem 0.5rem; border-bottom: 1px solid var(--border-color);
+            transition: background 0.2s;
+        }
+        .dash-list-item:last-child { border-bottom: none; }
+        .dash-list-item:hover { background: #f1f5f9; border-radius: var(--radius-md); }
+        .dash-list-item img {
+            width: 48px; height: 48px; border-radius: var(--radius-md);
+            object-fit: cover; border: 1px solid var(--border-color); flex-shrink: 0;
+        }
+        .dash-item-info { flex: 1; min-width: 0; }
+        .dash-item-info h4 {
+            font-size: 0.95rem; font-weight: 600; color: var(--text-dark);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .dash-item-info span { font-size: 0.82rem; color: var(--text-gray); }
+        .dash-item-meta {
+            text-align: right; flex-shrink: 0;
+        }
+        .dash-item-meta .price { font-weight: 600; color: var(--primary-color); font-size: 0.95rem; }
+        .dash-item-meta .stock { font-size: 0.8rem; color: var(--text-gray); }
+        .dash-item-meta .stock.low { color: #ea580c; font-weight: 600; }
+        .dash-item-meta .stock.out { color: var(--danger-color); font-weight: 600; }
+
+        /* Category Group Styles */
+        .cat-group { margin-bottom: 1.25rem; }
+        .cat-group-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0.6rem 0.75rem; background: #f1f5f9; border-radius: var(--radius-md);
+            margin-bottom: 0.5rem; cursor: pointer; transition: background 0.2s;
+        }
+        .cat-group-header:hover { background: #e2e8f0; }
+        .cat-group-header h4 { font-size: 0.95rem; font-weight: 600; color: var(--text-dark); display:flex; align-items:center; gap:0.5rem; }
+        .cat-group-header h4 i { color: var(--primary-color); font-size: 0.85rem; }
+        .cat-count {
+            background: var(--primary-color); color: white; font-size: 0.75rem;
+            padding: 0.2rem 0.65rem; border-radius: 9999px; font-weight: 600;
+        }
+        .cat-products { padding-left: 0.5rem; }
+
+        .dash-empty {
+            text-align: center; padding: 2.5rem 1rem; color: var(--text-gray);
+        }
+        .dash-empty i { font-size: 2.5rem; color: #cbd5e1; margin-bottom: 0.75rem; display:block; }
+    </style>
+
+    <script type="module">
+        import { listenToProducts } from "./product.js";
+
+        let allProducts = [];
+
+        // Modal controls
+        const modal = document.getElementById('dashboard-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+        const closeBtn = document.getElementById('modal-close-btn');
+
+        function openModal(title, contentHtml) {
+            modalTitle.textContent = title;
+            modalBody.innerHTML = contentHtml;
+            modal.classList.add('active');
+        }
+        function closeModal() { modal.classList.remove('active'); }
+
+        closeBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+        // Helper: build product list item HTML
+        function productItemHtml(p) {
+            const stockNum = Number(p.stock);
+            let stockClass = '';
+            let stockLabel = `${stockNum} in stock`;
+            if (stockNum <= 0) { stockClass = 'out'; stockLabel = 'Out of stock'; }
+            else if (stockNum < 10) { stockClass = 'low'; stockLabel = `Only ${stockNum} left`; }
+
+            return `
+                <li class="dash-list-item">
+                    <img src="${p.imageUrl || ''}" alt="${p.name}">
+                    <div class="dash-item-info">
+                        <h4>${p.name}</h4>
+                        <span>${p.category || 'Uncategorized'}</span>
+                    </div>
+                    <div class="dash-item-meta">
+                        <div class="price">₹${p.price}</div>
+                        <div class="stock ${stockClass}">${stockLabel}</div>
+                    </div>
+                </li>`;
+        }
+
+        // Card: Total Products
+        document.getElementById('card-total-products').addEventListener('click', () => {
+            if (allProducts.length === 0) {
+                openModal('All Products', `<div class="dash-empty"><i class="fa-solid fa-box-open"></i><p>No products found.</p></div>`);
+                return;
+            }
+            const listHtml = allProducts.map(p => productItemHtml(p)).join('');
+            openModal(`All Products (${allProducts.length})`, `<ul class="dash-list">${listHtml}</ul>`);
+        });
+
+        // Card: Low Stock
+        document.getElementById('card-low-stock').addEventListener('click', () => {
+            const lowStock = allProducts.filter(p => Number(p.stock) < 10);
+            if (lowStock.length === 0) {
+                openModal('Low Stock Products', `<div class="dash-empty"><i class="fa-solid fa-check-circle"></i><p>All products are well-stocked!</p></div>`);
+                return;
+            }
+            const sorted = [...lowStock].sort((a, b) => Number(a.stock) - Number(b.stock));
+            const listHtml = sorted.map(p => productItemHtml(p)).join('');
+            openModal(`Low Stock Products (${lowStock.length})`, `<ul class="dash-list">${listHtml}</ul>`);
+        });
+
+        // Card: Categories
+        document.getElementById('card-categories').addEventListener('click', () => {
+            const catMap = {};
+            allProducts.forEach(p => {
+                const cat = p.category || 'Uncategorized';
+                if (!catMap[cat]) catMap[cat] = [];
+                catMap[cat].push(p);
+            });
+
+            const catNames = Object.keys(catMap).sort();
+            if (catNames.length === 0) {
+                openModal('Categories', `<div class="dash-empty"><i class="fa-solid fa-tags"></i><p>No categories found.</p></div>`);
+                return;
+            }
+
+            let html = '';
+            catNames.forEach(cat => {
+                const products = catMap[cat];
+                const items = products.map(p => productItemHtml(p)).join('');
+                html += `
+                    <div class="cat-group">
+                        <div class="cat-group-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'">
+                            <h4><i class="fa-solid fa-leaf"></i> ${cat}</h4>
+                            <span class="cat-count">${products.length} product${products.length > 1 ? 's' : ''}</span>
+                        </div>
+                        <div class="cat-products">
+                            <ul class="dash-list">${items}</ul>
+                        </div>
+                    </div>`;
+            });
+            openModal(`Categories (${catNames.length})`, html);
+        });
+
+        // Listen for stats (realtime)
+        listenToProducts((products) => {
+            allProducts = products;
+
+            document.getElementById("total-products").textContent = products.length;
+            
+            const lowStockCount = products.filter(p => Number(p.stock) < 10).length;
+            document.getElementById("low-stock").textContent = lowStockCount;
+
+            const categories = new Set(products.map(p => p.category));
+            document.getElementById("total-categories").textContent = categories.size;
+        });
+
+        // Real-time unread messages count
+        import { listenToMessages } from "./message.js";
+        listenToMessages((messages) => {
+            const unreadCount = messages.filter(m => m.status === 'unread').length;
+            const badge = document.getElementById("unread-messages");
+            if (badge) badge.textContent = unreadCount;
+        });
+    </script>
+</body>
+</html>

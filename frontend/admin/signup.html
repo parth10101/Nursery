@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup | Matoshree Nursery</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div style="margin-bottom: 1.5rem;">
+                <img src="../SDG/images/logo/logo.png" alt="Matoshree Nursery" style="max-height: 80px; width: auto;">
+            </div>
+            <h2>Create Admin Account</h2>
+            <p>Register as a new administrator</p>
+
+            <form id="signup-form">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" class="form-control" autocomplete="email" required placeholder="admin@matoshree.com">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" required placeholder="•••••••• (Min 6 chars)">
+                </div>
+
+                <div id="signup-error" style="color: var(--danger-color); font-size: 0.9rem; margin-bottom: 1rem; display: none;">
+                    Failed to create account.
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block" id="signup-btn">
+                    <span>Sign Up</span>
+                    <i class="fa-solid fa-user-plus"></i>
+                </button>
+            </form>
+            
+            <p style="margin-top: 1.5rem; font-size: 0.9rem;">
+                Already have an account? <a href="../pages/login.html" style="color: var(--primary-color); text-decoration: none; font-weight: 500;">Login here</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- UI Interaction logic for signup -->
+    <script type="module">
+        import { handleSignup } from "./auth.js";
+
+        const form = document.getElementById("signup-form");
+        const btn = document.getElementById("signup-btn");
+        const errorDiv = document.getElementById("signup-error");
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Creating...`;
+            btn.disabled = true;
+            errorDiv.style.display = "none";
+
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            if (password.length < 6) {
+                errorDiv.textContent = "Password should be at least 6 characters.";
+                errorDiv.style.display = "block";
+                btn.innerHTML = `<span>Sign Up</span><i class="fa-solid fa-user-plus"></i>`;
+                btn.disabled = false;
+                return;
+            }
+
+            const res = await handleSignup(email, password);
+
+            if (!res.success) {
+                errorDiv.textContent = res.message || "Failed to create account.";
+                errorDiv.style.display = "block";
+                btn.innerHTML = `<span>Sign Up</span><i class="fa-solid fa-user-plus"></i>`;
+                btn.disabled = false;
+            } else {
+                window.location.href = "dashboard.html";
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product | Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <img src="../SDG/images/logo/logo.png" alt="Logo" style="height: 32px; margin-right: 0.5rem; width: auto;"> Matoshree
+            </div>
+            <ul class="nav-links">
+                <li><a href="dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="addProduct.html" class="active"><i class="fa-solid fa-plus-circle"></i> Add Product</a></li>
+                <li><a href="products.html"><i class="fa-solid fa-boxes-stacked"></i> Manage Products</a></li>
+                <li><a href="orders.html"><i class="fa-solid fa-truck-fast"></i> Orders</a></li>
+                <li><a href="messages.html"><i class="fa-solid fa-envelope"></i> Messages</a></li>
+                <li><a href="gallery-manager.html"><i class="fa-solid fa-images"></i> Gallery</a></li>
+            </ul>
+            <button class="logout-btn-sidebar" onclick="window.logoutAdmin()">
+                <i class="fa-solid fa-sign-out-alt"></i> Logout
+            </button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-title">Add New Product</div>
+                <div class="user-profile">
+                    <span class="user-email" id="admin-user-email">...</span>
+                    <div class="avatar"><i class="fa-solid fa-user"></i></div>
+                </div>
+            </header>
+
+            <div class="page-content">
+                <div class="form-card">
+                    <form id="add-product-form">
+                        <div class="form-group">
+                            <label for="name">Plant Name</label>
+                            <input type="text" id="name" class="form-control" required placeholder="e.g. Ficus Bonsai">
+                        </div>
+                        
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem;">
+                            <div class="form-group">
+                                <label for="price">Price (₹)</label>
+                                <input type="number" id="price" class="form-control" required min="1" step="any" placeholder="e.g. 500">
+                            </div>
+                            <div class="form-group">
+                                <label for="stock">Stock Quantity</label>
+                                <input type="number" id="stock" class="form-control" required min="0" placeholder="e.g. 50">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select id="category" class="form-control" required>
+                                <option value="" disabled selected>Select Category</option>
+                                <option value="Indoor">Indoor Plants</option>
+                                <option value="Outdoor">Outdoor Plants</option>
+                                <option value="Flowering">Flowering Plants</option>
+                                <option value="Medicinal">Medicinal Plants</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Plant Description</label>
+                            <textarea id="description" class="form-control" required placeholder="Detailed description of the plant..." rows="4"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="image">Upload Image (Max 5MB)</label>
+                            <input type="file" id="image" class="form-control" accept="image/*" required>
+                            <div class="image-preview-container" id="image-preview">
+                                <span>Preview Image</span>
+                                <img src="" alt="Preview">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block" style="margin-top:1rem;">
+                            <i class="fa-solid fa-upload"></i> Publish Product
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals, Toasts -->
+    <script type="module" src="auth.js?v=2"></script>
+    <script type="module">
+        import { handleImagePreview, showToast, showLoader, hideLoader } from "./admin.js?v=2";
+        import { uploadImageToCloudinary, addProduct } from "./product.js?v=2";
+
+        // Initialize Image Preview
+        handleImagePreview('image', 'image-preview');
+
+        // Form Submit Handler
+        const form = document.getElementById('add-product-form');
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const fileInput = document.getElementById('image');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                showToast("Please select an image", "error");
+                return;
+            }
+
+            try {
+                // 1. Upload to Cloudinary first
+                const imageUrl = await uploadImageToCloudinary(file);
+                
+                // 2. Prepare payload
+                const productData = {
+                    name: document.getElementById('name').value,
+                    price: Number(document.getElementById('price').value),
+                    stock: Number(document.getElementById('stock').value),
+                    category: document.getElementById('category').value,
+                    description: document.getElementById('description').value,
+                    imageUrl: imageUrl,
+                };
+                
+                console.log("FINAL PAYLOAD:", productData);
+
+                // 3. Add to Database
+                await addProduct(productData);
+
+                // 4. Success handling
+                showToast("Product added successfully!", "success");
+                form.reset();
+                
+                // reset preview
+                const prevImg = document.querySelector('#image-preview img');
+                const prevText = document.querySelector('#image-preview span');
+                if(prevImg) prevImg.style.display = 'none';
+                if(prevText) prevText.style.display = 'block';
+
+            } catch (error) {
+                showToast(error.message || "Failed to add product", "error");
+            }
+        });
+    </script>
+</body>
+</html>

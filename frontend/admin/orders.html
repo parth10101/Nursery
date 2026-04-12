@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Orders | Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <img src="../SDG/images/logo/logo.png" alt="Logo" style="height: 32px; margin-right: 0.5rem; width: auto;"> Matoshree
+            </div>
+            <ul class="nav-links">
+                <li><a href="dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="addProduct.html"><i class="fa-solid fa-plus-circle"></i> Add Product</a></li>
+                <li><a href="products.html"><i class="fa-solid fa-boxes-stacked"></i> Manage Products</a></li>
+                <li><a href="orders.html" class="active"><i class="fa-solid fa-truck-fast"></i> Orders</a></li>
+                <li><a href="messages.html"><i class="fa-solid fa-envelope"></i> Messages</a></li>
+                <li><a href="gallery-manager.html"><i class="fa-solid fa-images"></i> Gallery</a></li>
+            </ul>
+            <button class="logout-btn-sidebar" onclick="window.logoutAdmin()">
+                <i class="fa-solid fa-sign-out-alt"></i> Logout
+            </button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-title">Customer Orders</div>
+                <div class="user-profile">
+                    <span class="user-email" id="admin-user-email">...</span>
+                    <div class="avatar"><i class="fa-solid fa-user"></i></div>
+                </div>
+            </header>
+
+            <div class="page-content">
+                <div class="table-container">
+                    <table id="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-tbody">
+                            <tr>
+                                <td colspan="6" class="empty-state">
+                                    <div class="spinner" style="margin: 0 auto;"></div>
+                                    <p>Loading orders...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- View Order Modal -->
+    <div class="modal" id="view-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Order Details</h3>
+                <button class="close-btn" id="close-modal">&times;</button>
+            </div>
+            <div id="order-details-body">
+                <!-- Injected via JS -->
+            </div>
+            <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #edf2f7; display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <strong style="color: var(--text-dark);">Delivery Status:</strong>
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <select id="status-select" style="padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px; font-weight: 500;">
+                        <option value="Accepted">Accepted</option>
+                        <option value="Out for Delivery">Out for Delivery</option>
+                        <option value="Delivered">Delivered</option>
+                        <option value="Cancelled">Cancelled/Rejected</option>
+                    </select>
+                    <button class="btn btn-primary" id="update-status-btn">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="auth.js"></script>
+    <script type="module" src="auth.js"></script>
+    <script type="module">
+        import { showToast, showLoader, hideLoader } from "./admin.js";
+
+        const tbody = document.getElementById("orders-tbody");
+        const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && window.location.port !== '5000' ? 'http://localhost:5000/api' : '/api';
+        let ordersData = [];
+        let currentViewingId = null;
+
+        // Fetch Orders
+        async function fetchOrders() {
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`${API_URL}/orders`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (!res.ok) throw new Error("Failed to fetch orders");
+                
+                const snapshot = await res.json();
+                ordersData = snapshot;
+                tbody.innerHTML = "";
+
+                if (snapshot.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="6">
+                                <div class="empty-state">
+                                    <i class="fa-solid fa-receipt"></i>
+                                    <h3>No Orders Yet</h3>
+                                    <p>When customers checkout, their orders will appear here.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                // Sort newest first
+                ordersData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+                ordersData.forEach(order => {
+                    const tr = document.createElement("tr");
+                    
+                    let statusBadge = "";
+                    if (order.status === "Accepted") statusBadge = `<span class="badge" style="background:#2563eb; color:white;">Accepted</span>`;
+                    else if (order.status === "Out for Delivery") statusBadge = `<span class="badge" style="background:#0284c7; color:white;">Out for Delivery</span>`;
+                    else if (order.status === "Delivered") statusBadge = `<span class="badge" style="background:#16a34a; color:white;">Delivered</span>`;
+                    else if (order.status === "Cancelled") statusBadge = `<span class="badge" style="background:#dc2626; color:white;">Cancelled</span>`;
+                    // Legacy status fallback for any older orders still in DB
+                    else if (order.status === "Pending") statusBadge = `<span class="badge" style="background:#ea580c; color:white;">Pending</span>`;
+                    else if (order.status === "Processing") statusBadge = `<span class="badge" style="background:#2563eb; color:white;">Processing</span>`;
+                    else if (order.status === "Shipped") statusBadge = `<span class="badge" style="background:#8b5cf6; color:white;">Shipped</span>`;
+                    else statusBadge = `<span class="badge" style="background:#dc2626; color:white;">${order.status}</span>`;
+
+                    tr.innerHTML = `
+                        <td style="font-family: monospace; font-size: 0.85rem;">${(order._id || order.id).slice(0, 8)}</td>
+                        <td>
+                            <div style="font-weight: 500;">${order.customerDetails?.name || order.customerName || 'N/A'}</div>
+                            <div style="font-size: 0.8rem; color: var(--text-gray);">${order.customerDetails?.phone || order.phone || 'N/A'}</div>
+                        </td>
+                        <td>${order.items.length} plants</td>
+                        <td style="font-weight: 600;">₹${order.totalAmount || order.totalCost}</td>
+                        <td>${statusBadge}</td>
+                        <td>
+                            <button class="btn btn-outline view-btn" data-id="${order._id || order.id}">
+                                <i class="fa-solid fa-eye"></i> View
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                // Re-attach listeners
+                document.querySelectorAll(".view-btn").forEach(btn => {
+                    btn.addEventListener("click", (e) => {
+                        const id = e.currentTarget.getAttribute("data-id");
+                        openOrderModal(id);
+                    });
+                });
+            } catch(e) {
+                console.error(e);
+            }
+        }
+        fetchOrders();
+
+        const modal = document.getElementById("view-modal");
+        document.getElementById("close-modal").addEventListener("click", () => modal.classList.remove("active"));
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) modal.classList.remove('active');
+        });
+
+        function openOrderModal(id) {
+            currentViewingId = id;
+            const order = ordersData.find(o => (o._id || o.id) === id);
+            if (!order) return;
+
+            const body = document.getElementById("order-details-body");
+            
+            let itemsHtml = order.items.map(item => `
+                <div style="display:flex; justify-content:space-between; margin-bottom: 0.5rem; padding-bottom: 0.5rem; border-bottom: 1px dashed var(--border-color);">
+                    <span>${item.qty || item.quantity}x ${item.name}</span>
+                    <span style="font-weight:500;">₹${item.price * (item.qty || item.quantity)}</span>
+                </div>
+            `).join("");
+
+            body.innerHTML = `
+                <div style="background: #f8fafc; padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1rem;">
+                    <strong>Delivery Address:</strong><br>
+                    <span style="font-size: 0.9rem; color: var(--text-gray);">${order.customerDetails?.address || order.address}</span>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <strong>Email:</strong> ${order.customerDetails?.email || order.email || 'N/A'}<br>
+                    <strong>Time:</strong> ${new Date(order.createdAt).toLocaleString()}<br>
+                </div>
+                <h4 style="margin-bottom: 0.75rem;">Order Items</h4>
+                <div style="max-height: 200px; overflow-y: auto;">
+                    ${itemsHtml}
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-top: 1rem; padding-top: 1rem; border-top: 2px solid var(--border-color);">
+                    <strong>Customer Total:</strong>
+                    <strong>₹${order.totalAmount || order.totalCost}</strong>
+                </div>
+            `;
+
+            // Setup tracking dropdown
+            const statusSelect = document.getElementById("status-select");
+            const updateBtn = document.getElementById("update-status-btn");
+            
+            // Map any legacy status values to the new system
+            const legacyMap = { "Pending": "Accepted", "Processing": "Accepted", "Approved": "Accepted", "Shipped": "Accepted", "Rejected": "Cancelled" };
+            let currentStatus = legacyMap[order.status] || order.status;
+            statusSelect.value = currentStatus;
+
+            // Lock if already in a terminal state (Delivered or Cancelled)
+            const isTerminal = currentStatus === "Delivered" || currentStatus === "Cancelled";
+            statusSelect.disabled = isTerminal;
+            updateBtn.disabled = isTerminal;
+            updateBtn.style.opacity = isTerminal ? "0.5" : "1";
+
+            modal.classList.add("active");
+        }
+
+        // Action Handlers
+        document.getElementById("update-status-btn").addEventListener("click", async () => {
+            if (!currentViewingId) return;
+            const newStatus = document.getElementById("status-select").value;
+            
+            if (newStatus === "Cancelled") {
+                if (!confirm("Cancelling this order will permanently reject it and return the stock items to the database. Proceed?")) return;
+            }
+            
+            showLoader();
+            try {
+                // Return stock visually if Cancelled
+                if (newStatus === "Cancelled") {
+                    const order = ordersData.find(o => (o._id || o.id) === currentViewingId);
+                    for (const item of order.items) {
+                        try {
+                            const res = await fetch(`${API_URL}/products/${item.id}`);
+                            if(res.ok) {
+                                const prod = await res.json();
+                                await fetch(`${API_URL}/products/${item.id}`, {
+                                    method: 'PUT',
+                                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+                                    body: JSON.stringify({stock: prod.stock + (item.qty || item.quantity)})
+                                });
+                            }
+                        } catch(e) {}
+                    }
+                }
+                
+                await fetch(`${API_URL}/orders/${currentViewingId}/status`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+                    body: JSON.stringify({ status: newStatus })
+                });
+                
+                showToast(`Order marked as ${newStatus}`, "success");
+                modal.classList.remove("active");
+                fetchOrders();
+            } catch (err) {
+                console.error(err);
+                showToast("Error updating tracking status", "error");
+            }
+            hideLoader();
+        });
+
+    </script>
+</body>
+</html>

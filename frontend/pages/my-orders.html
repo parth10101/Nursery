@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - Matoshree Nursery</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .orders-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+        }
+        .orders-header h1 { font-size: 3rem; margin-top: 2rem; }
+        
+        .orders-container {
+            max-width: 1000px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+            min-height: 50vh;
+        }
+        
+        .order-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            border: 1px solid #edf2f7;
+        }
+        
+        .order-header {
+            background: #f8fafc;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #edf2f7;
+        }
+        
+        .order-info { display: flex; gap: 3rem; }
+        .info-group { display: flex; flex-direction: column; }
+        .info-label { font-size: 0.85rem; color: #64748b; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+        .info-value { font-size: 1.1rem; color: #1e293b; font-weight: 600; }
+        
+        .badge {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .badge-accepted { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+        .badge-out-for-delivery { background: #f0f9ff; color: #0284c7; border: 1px solid #bae6fd; }
+        .badge-delivered { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+        .badge-cancelled { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+        /* Legacy fallbacks for old DB records */
+        .badge-pending { background: #fff7ed; color: #ea580c; border: 1px solid #fed7aa; }
+        .badge-processing { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+        .badge-shipped { background: #f5f3ff; color: #8b5cf6; border: 1px solid #ddd6fe; }
+        
+        .order-body { padding: 2rem; }
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        .item-row:last-child { border-bottom: none; }
+        .item-details { display: flex; align-items: center; gap: 1.5rem; }
+        .item-img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; }
+        
+        .empty-state { text-align: center; padding: 4rem 0; color: #64748b; }
+        .empty-state i { font-size: 4rem; color: #cbd5e1; margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+
+    <!-- Header Overlay Included by auth.js -->
+    <header class="header scrolled" id="header" style="background: white !important;">
+        <div class="container">
+            <div class="logo-container">
+                <a href="index.html" class="logo">
+                    <img src="images/logo/logo.png" alt="Matoshree Nursery" class="logo-img" style="height: 60px;">
+                </a>
+            </div>
+            <nav class="nav" id="navbar">
+                <ul class="nav-links">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="plants.html" class="nav-link">Plants & Products</a></li>
+                </ul>
+                <div class="hamburger" id="hamburger">
+                    <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="orders-header">
+        <h1>Your Orders</h1>
+        <p>Track the status of your plant deliveries</p>
+    </div>
+
+    <div class="orders-container" id="orders-list">
+        <!-- Loaders -->
+        <div class="empty-state">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+            <h3>Loading your order history...</h3>
+        </div>
+    </div>
+
+    <script type="module" src="auth.js"></script>
+    <script type="module" src="auth.js"></script>
+    <script type="module">
+        import { initCustomerAuth } from "./auth.js";
+        const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && window.location.port !== '5000' ? 'http://localhost:5000/api' : '/api';
+        const ordersContainer = document.getElementById("orders-list");
+
+        initCustomerAuth(async (user) => {
+            if (!user) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`${API_URL}/orders/myorders`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (!res.ok) throw new Error("Failed to fetch orders");
+                
+                let myOrders = await res.json();
+                
+                ordersContainer.innerHTML = '';
+                
+                if (myOrders.length === 0) {
+                    ordersContainer.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fa-solid fa-box-open"></i>
+                            <h3>No Orders Yet</h3>
+                            <p>You haven't purchased any plants yet. Visit the store to start growing!</p>
+                            <a href="plants.html" class="btn" style="background:var(--primary-color);color:white;padding:0.7rem 1.5rem;border-radius:50px;text-decoration:none;display:inline-block;margin-top:1rem;">Browse Plants</a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Sort descending logically
+                myOrders.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+                myOrders.forEach(order => {
+                    let badgeClass = "badge-accepted";
+                    let displayName = order.status;
+
+                    if (order.status === "Accepted")                                   { badgeClass = "badge-accepted"; }
+                    else if (order.status === "Out for Delivery")                      { badgeClass = "badge-out-for-delivery"; }
+                    else if (order.status === "Delivered")                             { badgeClass = "badge-delivered"; }
+                    else if (order.status === "Cancelled" || order.status === "Rejected") { badgeClass = "badge-cancelled"; displayName = "Cancelled"; }
+                    // Legacy DB values — show gracefully
+                    else if (order.status === "Pending")                               { badgeClass = "badge-pending"; }
+                    else if (order.status === "Processing" || order.status === "Approved") { badgeClass = "badge-processing"; displayName = "Processing"; }
+                    else if (order.status === "Shipped")                               { badgeClass = "badge-shipped"; }
+
+                    let itemsHtml = order.items.map(item => `
+                        <div class="item-row">
+                            <div class="item-details">
+                                <img src="${item.imageUrl}" class="item-img">
+                                <div>
+                                    <div style="font-weight:600; color:#1e293b;">${item.name}</div>
+                                    <div style="font-size:0.9rem; color:#64748b;">Qty: ${item.qty || item.quantity}</div>
+                                </div>
+                            </div>
+                            <div style="font-weight:600; color:var(--primary-color);">₹${item.price * (item.qty || item.quantity)}</div>
+                        </div>
+                    `).join('');
+
+                    ordersContainer.innerHTML += `
+                        <div class="order-card">
+                            <div class="order-header">
+                                <div class="order-info">
+                                    <div class="info-group">
+                                        <span class="info-label">Order Placed</span>
+                                        <span class="info-value">${new Date(order.createdAt).toLocaleDateString()}</span>
+                                    </div>
+                                    <div class="info-group">
+                                        <span class="info-label">Total Amount</span>
+                                        <span class="info-value">₹${order.totalAmount || order.totalCost}</span>
+                                    </div>
+                                    <div class="info-group">
+                                        <span class="info-label">Order ID</span>
+                                        <span class="info-value" style="font-family:monospace;">${order._id ? order._id.slice(0, 8) : ''}</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="badge ${badgeClass}">${displayName}</span>
+                                </div>
+                            </div>
+                            <div class="order-body">
+                                <p style="margin-bottom:1rem; font-size:0.9rem; color:#64748b;">
+                                    <strong>Delivery To:</strong> ${order.customerDetails?.address || order.address || ''}
+                                </p>
+                                ${itemsHtml}
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (error) {
+                console.error(error);
+                ordersContainer.innerHTML = `<p style="text-align: center; color: red;">Failed to load orders.</p>`;
+            }
+        });
+    </script>
+</body>
+</html>

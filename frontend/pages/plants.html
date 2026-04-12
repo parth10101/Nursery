@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plants & Products - Matoshree Nursery</title>
+    <meta name="description" content="Browse our wide selection of plants and gardening products at Matoshree Nursery.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Geom:ital,wght@0,300..900;1,300..900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Plants Page Specific Styles */
+        .page-header {
+            position: relative;
+            height: 60vh;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+            padding: 0 2rem;
+            margin-bottom: 4rem; /* Add space below hero section */
+        }
+        
+        .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        .video-container video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%) scale(1);
+            transform: translate(-50%, -50%) scale(1);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -webkit-perspective: 1000;
+            perspective: 1000;
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 40, 20, 0.5), rgba(0, 60, 30, 0.7));
+            z-index: 1;
+            pointer-events: none;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .hero-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 4.5rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 1s ease-out;
+        }
+        .divider {
+            width: 100px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.8);
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+        .divider:after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.5);
+            left: 20%;
+            bottom: -8px;
+        }
+        .hero-subtitle {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 300;
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+        .cta-button {
+            display: inline-block;
+            background: #2e7d32;
+            color: white;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1.6rem;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+        .cta-button:hover {
+            background: #1b5e20;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            background: transparent;
+            padding: 2rem 0;
+        }
+        .header.scrolled {
+            position: fixed;
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+        .header.scrolled .nav-link {
+            color: #333;
+        }
+        .header.scrolled .logo-img {
+            height: 150px;
+        }
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .page-header {
+                height: 50vh;
+                min-height: 350px;
+                margin-bottom: 3rem;
+            }
+            .hero-title {
+                font-size: 3.2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.6rem;
+                padding: 0 1rem;
+            }
+            
+            .cta-button {
+                padding: 1rem 2.5rem;
+                font-size: 1.4rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .page-header {
+                height: 45vh;
+                min-height: 300px;
+                margin-bottom: 2.5rem;
+            }
+            .hero-title {
+                font-size: 2.6rem;
+            }
+            .filter-buttons {
+                gap: 0.8rem;
+                padding: 0 1rem;
+                margin: 2.5rem 0 3rem;
+            }
+            .category-btn {
+                padding: 0.7rem 1.5rem;
+                font-size: 1.3rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.4rem;
+            }
+        }
+        /* Filter Buttons */
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            margin: 3rem 0 4rem;
+            padding: 0 2rem;
+        }
+
+        .category-btn {
+            padding: 0.9rem 2.2rem;
+            border: 2px solid var(--primary-color);
+            background: transparent;
+            color: var(--primary-color);
+            border-radius: 50px;
+            font-size: 1.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .category-btn:hover,
+        .category-btn.active,
+        .category-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Plants Grid */
+        .plants-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 3rem;
+            margin: 5rem 0;
+        }
+
+        .plant-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .plant-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .plant-image {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .plant-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .plant-card:hover .plant-image img {
+            transform: scale(1.05);
+        }
+
+        .plant-info {
+            padding: 2rem;
+        }
+
+        .plant-info h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .plant-category {
+            display: inline-block;
+            background: var(--light-bg);
+            color: var(--primary-color);
+            padding: 0.3rem 1.2rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .plant-desc {
+            font-size: 1.3rem;
+            color: #666;
+            line-height: 1.5;
+            margin: 0.5rem 0 0.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .plant-price {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 1rem 0;
+        }
+
+        .btn-add-to-cart {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn-add-to-cart:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .plants-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                gap: 2rem;
+            }
+
+            .page-header h1 {
+                font-size: 3.5rem;
+            }
+
+            .page-header p {
+                font-size: 1.6rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .filter-buttons {
+                gap: 1rem;
+            }
+
+            .category-btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 1.4rem;
+            }
+        }
+        
+        /* Shopping Cart & Modal Styles */
+        .cart-toggle-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary-color);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            cursor: pointer;
+            z-index: 99;
+            transition: transform 0.3s;
+        }
+        .cart-toggle-btn:hover { transform: scale(1.1); }
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #e74c3c;
+            color: white;
+            font-size: 0.9rem;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            z-index: 1001;
+            transition: right 0.4s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .cart-sidebar.open { right: 0; }
+        .cart-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .cart-close { font-size: 1.5rem; cursor: pointer; color: #666; }
+        .cart-items-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+        .cart-item {
+            display: flex;
+            gap: 1rem;
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        .cart-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 5px; }
+        .cart-item-details { flex: 1; }
+        .cart-item-details h4 { font-size: 1.2rem; margin-bottom: 0.2rem; color: #333; }
+        .cart-qty-ctrl { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem; }
+        .cart-qty-ctrl button { background: #ddd; border: none; width: 25px; height: 25px; border-radius: 50%; cursor: pointer; font-weight: bold; }
+        
+        .cart-footer { padding: 1.5rem; border-top: 1px solid #eee; background: #fff; }
+        .cart-total { display: flex; justify-content: space-between; font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem; }
+        
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 2000;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+        .checkout-modal {
+            background: white; width: 90%; max-width: 500px; padding: 2.5rem;
+            border-radius: 10px; transform: scale(0.9); transition: transform 0.3s;
+            max-height: 90vh; overflow-y: auto;
+        }
+        .modal-overlay.active .checkout-modal { transform: scale(1); }
+        .checkout-modal h2 { font-size: 2rem; margin-bottom: 1.5rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; font-size: 1.2rem; margin-bottom: 0.5rem; font-weight: 500;}
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 1rem; border: 1px solid #ccc; border-radius: 5px; font-family: inherit; font-size: 1.1rem;
+        }
+        .order-summary {
+            background: #f8f9fa; border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0;
+            border: 1px solid #e9ecef;
+        }
+        .order-summary h3 {
+            font-size: 1.4rem; margin-bottom: 1rem; color: #333;
+            padding-bottom: 0.8rem; border-bottom: 1px solid #dee2e6;
+        }
+        .summary-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0.6rem 0; font-size: 1.2rem; color: #555;
+        }
+        .summary-row.total {
+            border-top: 2px solid #27ae60; margin-top: 0.8rem; padding-top: 1rem;
+            font-size: 1.5rem; font-weight: 700; color: #27ae60;
+        }
+        .payment-note {
+            background: #fff8e1; border: 1px solid #ffe082; border-radius: 8px;
+            padding: 1rem 1.2rem; margin: 1.5rem 0; display: flex; align-items: flex-start; gap: 0.8rem;
+        }
+        /* Stock Status Styles */
+        .out-of-stock { 
+            filter: grayscale(100%) blur(0.5px); 
+            opacity: 0.6; 
+            transition: all 0.5s ease;
+        }
+        .out-of-stock-badge { 
+            position: absolute; 
+            top: 1.5rem; 
+            right: 1.5rem; 
+            background: #2c3e50; 
+            color: white; 
+            padding: 0.6rem 1.4rem; 
+            border-radius: 6px; 
+            font-weight: 700; 
+            font-size: 1.3rem;
+            z-index: 10;
+            text-transform: uppercase;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .low-stock-badge { 
+            position: absolute; 
+            top: 1.5rem; 
+            right: 1.5rem; 
+            background: linear-gradient(135deg, #e74c3c, #c0392b); 
+            color: white; 
+            padding: 0.8rem 1.6rem; 
+            border-radius: 6px; 
+            font-weight: 800; 
+            font-size: 1.4rem; 
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Toast Notification System */
+        #toast-container {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .toast {
+            background: #fff;
+            color: #333;
+            padding: 1.2rem 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            font-size: 1.4rem;
+            font-weight: 500;
+            transform: translateX(120%);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border-left: 5px solid var(--primary-color);
+        }
+        .toast.show { transform: translateX(0); }
+        .toast.error { border-left-color: #e74c3c; }
+        .toast.success { border-left-color: #2ecc71; }
+        .toast i { font-size: 1.8rem; }
+
+        /* Description Truncation */
+        .plant-desc {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-height: 3.6rem; /* Ensures consistent card height */
+            line-height: 1.8rem;
+            margin: 0.8rem 0;
+            color: #7f8c8d;
+            font-size: 1.3rem;
+        }
+    </style>
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        // Smooth scroll for CTA button
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</head>
+<body class="plants-page">
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+    <!-- Header & Navigation -->
+    <header class="header" id="header">
+        <div class="container">
+            <div class="logo-container">
+                <a href="index.html" class="logo">
+                    <img src="images/logo/logo.png" alt="Matoshree Nursery" class="logo-img">
+                </a>
+            </div>
+            <nav class="nav" id="navbar">
+                <ul class="nav-links">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="plants.html" class="nav-link active">Plants & Products</a></li>
+                    <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                    <li><a href="about.html" class="nav-link">About Us</a></li>
+                    <li><a href="services.html" class="nav-link">Services</a></li>
+                    <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+                </ul>
+                <div class="hamburger" id="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="video-container">
+            <video autoplay muted loop playsinline id="plants-video">
+                <source src="plants.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Our Premium Plants Collection</h1>
+            <div class="divider"></div>
+            <p class="hero-subtitle">Discover a wide variety of indoor and outdoor plants, carefully nurtured to bring life and beauty to your space.</p>
+            <a href="#plants-grid" class="cta-button">Explore Plants</a>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- Plants Filter -->
+        <div class="filter-buttons">
+            <button class="category-btn active" data-category="all">All Plants</button>
+            <button class="category-btn" data-category="indoor">Indoor Plants</button>
+            <button class="category-btn" data-category="outdoor">Outdoor Plants</button>
+            <button class="category-btn" data-category="flowering">Flowering Plants</button>
+            <button class="category-btn" data-category="medicinal">Medicinal Plants</button>
+        </div>
+
+        <!-- Plants Grid -->
+        <div class="plants-grid" id="plantContainer">
+            <!-- Dynamic Injection -->
+            <div style="grid-column: 1 / -1; text-align: center; padding: 4rem;">
+                <p style="font-size: 1.5rem; color: #666;">Loading plants from database...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Floating Button -->
+    <div class="cart-toggle-btn" id="cart-toggle-btn">
+        <i class="fa-solid fa-shopping-cart"></i>
+        <div class="cart-badge" id="cart-badge">0</div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <i class="fa-solid fa-times cart-close" id="cart-close"></i>
+        </div>
+        <div class="cart-items-container" id="cart-items">
+            <!-- Cart Items Output -->
+            <p style="text-align: center; color: #777; margin-top: 2rem;">Your cart is empty.</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total-price">₹0</span>
+            </div>
+            <button class="btn-add-to-cart" id="checkout-btn" style="width: 100%;">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal-overlay" id="checkout-modal-overlay">
+        <div class="checkout-modal">
+            <h2>Delivery Details</h2>
+            <form id="checkout-form">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="cust-name" required placeholder="E.g. Rajesh Kumar">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="cust-email" required placeholder="e.g. rajesh@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="cust-phone" required placeholder="+91 9876543210">
+                </div>
+                <div class="form-group">
+                    <label>Delivery Address</label>
+                    <textarea id="cust-address" required rows="3" placeholder="Complete address including pincode"></textarea>
+                </div>
+
+                <!-- Order Price Summary -->
+                <div class="order-summary">
+                    <h3><i class="fa-solid fa-receipt" style="margin-right:0.5rem;"></i>Order Summary</h3>
+                    <div class="summary-row">
+                        <span>Plant Price</span>
+                        <span id="summary-plant-price">₹0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Delivery Charges</span>
+                        <span>₹500</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total Amount</span>
+                        <span id="summary-total">₹0</span>
+                    </div>
+                </div>
+
+                <!-- Payment Note -->
+                <div class="payment-note">
+                    <i class="fa-solid fa-info-circle"></i>
+                    <p>Payment is accepted only via <strong>Cash on Delivery (COD)</strong> or <strong>UPI on Delivery</strong>. No advance payment is required.</p>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <button type="button" class="btn-add-to-cart" id="cancel-checkout-btn" style="background: #ccc; color: #333;">Cancel</button>
+                    <button type="submit" class="btn-add-to-cart" id="confirm-order-btn" style="background: #27ae60;">Confirm Order</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+
+    <!-- Call to Action -->
+    <section class="cta-section" style="background-color: #f8f9fa; padding: 8rem 0; text-align: center; margin-top: 5rem;">
+        <div class="container">
+            <h2 style="font-size: 3.5rem; margin-bottom: 2rem; color: var(--text-dark);">Can't Find What You're Looking For?</h2>
+            <p style="font-size: 1.8rem; color: var(--text-light); max-width: 700px; margin: 0 auto 3rem;">Contact us for special orders or inquiries about specific plants.</p>
+            <a href="index.html#contact" class="btn" style="display: inline-block; background: var(--primary-color); color: white; padding: 1.2rem 3.5rem; border-radius: 50px; font-size: 1.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; text-decoration: none;">Contact Us</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" style="background: #2c3e50; color: white; padding: 5rem 0 2rem; margin-top: 5rem;">
+        
+    </footer>
+
+    <script type="module">
+        const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && window.location.port !== '5000' ? 'http://localhost:5000/api' : '/api';
+
+        // UI toggles
+        const currYearEl = document.getElementById('currentYear');
+        if (currYearEl) currYearEl.textContent = new Date().getFullYear();
+        
+        // Toast Helper
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icon = type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check';
+            toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 500);
+            }, 4000);
+        }
+
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.querySelector('.nav-links');
+        if (hamburger) {
+            hamburger.addEventListener('click', () => { hamburger.classList.toggle('active'); navMenu.classList.toggle('active'); });
+        }
+
+        // Cart State
+        let cart = JSON.parse(localStorage.getItem('nursery_cart')) || [];
+        function saveCart() { localStorage.setItem('nursery_cart', JSON.stringify(cart)); }
+        
+        // Cart UI
+        const cartToggle = document.getElementById('cart-toggle-btn');
+        const cartSidebar = document.getElementById('cart-sidebar');
+        const cartClose = document.getElementById('cart-close');
+        
+        cartToggle.addEventListener('click', async () => {
+             // Sync stock before opening cart to ensure quantity controls are accurate
+             await fetchProducts(false); 
+             cartSidebar.classList.add('open');
+        });
+        cartClose.addEventListener('click', () => cartSidebar.classList.remove('open'));
+
+        function updateCartUI() {
+            const badge = document.getElementById('cart-badge');
+            const itemsContainer = document.getElementById('cart-items');
+            const totalEl = document.getElementById('cart-total-price');
+            const checkoutBtn = document.getElementById('checkout-btn');
+            
+            let totalQty = 0;
+            let totalPrice = 0;
+            itemsContainer.innerHTML = '';
+            
+            if (cart.length === 0) {
+                itemsContainer.innerHTML = '<p style="text-align: center; color: #777; margin-top: 2rem;">Your cart is empty.</p>';
+                checkoutBtn.disabled = true;
+                checkoutBtn.style.opacity = 0.5;
+            } else {
+                checkoutBtn.disabled = false;
+                checkoutBtn.style.opacity = 1;
+                cart.forEach((item, index) => {
+                    // Ensure quantity is always a valid number (never undefined)
+                    const qty = Number(item.quantity) || 1;
+                    totalQty += qty;
+                    totalPrice += item.price * qty;
+                    
+                    itemsContainer.innerHTML += `
+                        <div class="cart-item">
+                            <img src="${item.imageUrl}" alt="${item.name}">
+                            <div class="cart-item-details">
+                                <h4>${item.name}</h4>
+                                <p style="color:var(--primary-color); font-weight:bold;">₹${item.price}</p>
+                                <div class="cart-qty-ctrl">
+                                    <button onclick="window.updateCartQty(${index}, -1)" ${qty <= 1 ? 'title="Remove item"' : ''}>-</button>
+                                    <span>${qty}</span>
+                                    <button onclick="window.updateCartQty(${index}, 1)">+</button>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-trash" style="color:#e74c3c; cursor:pointer; align-self:center;" onclick="window.removeCartItem(${index})"></i>
+                        </div>
+                    `;
+                });
+            }
+            badge.textContent = totalQty;
+            totalEl.textContent = '₹' + totalPrice;
+        }
+
+        // Get live stock for a product from the freshly synced productsData array
+        function getLiveStock(productId) {
+            // Find by either id or _id for maximum safety
+            const product = productsData.find(p => p.id === productId || p._id === productId);
+            if (!product) {
+                console.warn(`[STOCK SYNC] Product ID ${productId} not found in live data.`);
+                return 0;
+            }
+            return Number(product.stock);
+        }
+
+        window.updateCartQty = (index, change) => {
+            const item = cart[index];
+            const currentQty = Number(item.quantity) || 1;
+            const newQty = currentQty + change;
+            
+            if (newQty <= 0) {
+                // '-' button pressed at qty=1 → remove item
+                cart.splice(index, 1);
+                showToast('Item removed from cart');
+            } else {
+                const liveStock = getLiveStock(item.id);
+                if (newQty > liveStock) {
+                    showToast(`Sorry, only ${liveStock} units available.`, 'error');
+                    return;
+                }
+                item.quantity = newQty;
+                if (change > 0 && item.quantity === liveStock) {
+                    showToast(`You've reached the stock limit for ${item.name}`, 'error');
+                }
+            }
+            saveCart(); updateCartUI();
+        };
+        window.removeCartItem = (index) => { cart.splice(index, 1); saveCart(); updateCartUI(); showToast('Item removed from cart'); };
+        window.addToCart = (id, name, price, imageUrl) => {
+            const liveStock = getLiveStock(id);
+
+            if (liveStock <= 0) {
+                showToast("This item is currently sold out.", "error");
+                return;
+            }
+
+            const existing = cart.find(c => c.id === id);
+            if (existing) {
+                const currentQty = Number(existing.quantity) || 1;
+                if (currentQty < liveStock) { 
+                    existing.quantity = currentQty + 1;
+                    showToast(`Updated quantity for ${name}`);
+                } else { 
+                    showToast(`Limit reached: Only ${liveStock} available.`, "error"); 
+                    return; 
+                }
+            } else {
+                // Initialize with quantity=1 (never qty, never undefined)
+                cart.push({ id, name, price, imageUrl, quantity: 1 });
+                showToast(`Added ${name} to cart`);
+            }
+            saveCart(); updateCartUI(); cartSidebar.classList.add('open');
+        };
+
+        // Fetch Products via API implementation
+        const plantContainer = document.getElementById('plantContainer');
+        let productsData = [];
+
+        async function fetchProducts(shouldRender = true) {
+            try {
+                const res = await fetch(`${API_URL}/products`);
+                const rawData = await res.json();
+                
+                // CRUCIAL: Map _id to id to prevent 'Sold Out' logic errors
+                productsData = rawData.map(p => ({ ...p, id: p._id }));
+                
+                console.log("Fetched products:", productsData);
+                
+                // Keep product listener updated
+                if (shouldRender) {
+                    const activeBtn = document.querySelector('.category-btn.active');
+                    const activeCat = activeBtn ? activeBtn.getAttribute('data-category') : 'all';
+                    renderPlants(activeCat);
+                }
+                updateCartUI(); 
+            } catch (err) {
+                console.error("Error fetching products", err);
+            }
+        }
+        
+        // Initial fetch
+        fetchProducts();
+
+        // 1. Periodic Background Sync (every 30 seconds)
+        setInterval(() => fetchProducts(true), 30000);
+
+        function renderPlants(filterCategory) {
+            plantContainer.innerHTML = '';
+            
+            const filtered = filterCategory === 'all' 
+                ? productsData 
+                : productsData.filter(p => p.category.toLowerCase() === filterCategory.toLowerCase());
+                
+            if(filtered.length === 0) {
+                plantContainer.innerHTML = '<p style="grid-column: 1/-1; text-align:center; font-size:1.5rem; color:#666;">No plants found in this category.</p>';
+                return;
+            }
+            
+            filtered.forEach(p => {
+                const stock = Number(p.stock);
+                const isOutOfStock = stock <= 0;
+                const isLowStock = !isOutOfStock && stock <= 10;
+                
+                const cardClass = isOutOfStock ? "plant-card out-of-stock" : "plant-card";
+                let badgeHtml = "";
+                if (isOutOfStock) {
+                    badgeHtml = `<div class="out-of-stock-badge">Sold Out</div>`;
+                } else if (isLowStock) {
+                    const stockText = stock === 1 ? "Hurry! Only 1 left" : `Limited: Only ${stock} left`;
+                    badgeHtml = `<div class="low-stock-badge">${stockText}</div>`;
+                }
+
+                const btnHtml = isOutOfStock 
+                    ? `<button class="btn-add-to-cart" disabled style="background:#bdc3c7; cursor:not-allowed;">Sold Out</button>`
+                    : `<button class="btn-add-to-cart" onclick="window.addToCart('${p.id}', '${p.name}', ${p.price}, '${p.imageUrl}')">Add to Cart</button>`;
+
+                plantContainer.innerHTML += `
+                    <div class="${cardClass}" style="position:relative;">
+                        ${badgeHtml}
+                        <div class="plant-image">
+                            <img src="${p.imageUrl}" alt="${p.name}" style="${isOutOfStock ? 'filter: grayscale(100%);' : ''}">
+                        </div>
+                        <div class="plant-info">
+                            <span class="plant-category">${p.category}</span>
+                            <h3>${p.name}</h3>
+                            <p class="plant-desc">${p.description || `<span style="color:#e74c3c;">[No description found in database]</span>`}</p>
+                            <p class="plant-price">₹${p.price}</p>
+                            ${btnHtml}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Filter functionality
+        const filterButtons = document.querySelectorAll('.category-btn');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                renderPlants(button.getAttribute('data-category'));
+            });
+        });
+
+        // Checkout Logic
+        import { initCustomerAuth } from "./auth.js";
+        
+        let currentUser = null;
+        initCustomerAuth(user => { currentUser = user; });
+
+        const checkoutModal = document.getElementById('checkout-modal-overlay');
+        const DELIVERY_CHARGE = 500;
+        document.getElementById('checkout-btn').addEventListener('click', async () => {
+             if (!currentUser) {
+                 showToast("Please login to place an order", "error");
+                 setTimeout(() => window.location.href = "login.html", 1500);
+                 return;
+             }
+
+             // 2. Final Sync Check before showing modal
+             await fetchProducts(false);
+
+             // Re-verify the whole cart against fresh stock data
+             for (const item of cart) {
+                 const liveStock = getLiveStock(item.id);
+                 if (item.qty > liveStock) {
+                     showToast(`Stock updated for ${item.name}. Now ${liveStock} available.`, 'error');
+                     item.qty = Math.max(0, liveStock);
+                     if (item.qty === 0) {
+                         cart = cart.filter(c => c.id !== item.id);
+                     }
+                     saveCart();
+                     updateCartUI();
+                     return; // stop and let user see the update
+                 }
+             }
+
+             if (cart.length === 0) {
+                showToast("Your cart is empty or out of stock.", "error");
+                return;
+             }
+
+             // Populate order summary prices
+             const plantPrice = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+             document.getElementById('summary-plant-price').textContent = '₹' + plantPrice;
+             document.getElementById('summary-total').textContent = '₹' + (plantPrice + DELIVERY_CHARGE);
+             checkoutModal.classList.add('active');
+             cartSidebar.classList.remove('open');
+        });
+        document.getElementById('cancel-checkout-btn').addEventListener('click', () => checkoutModal.classList.remove('active'));
+        
+        document.getElementById('checkout-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('confirm-order-btn');
+            btn.innerHTML = "Processing..."; btn.disabled = true;
+
+            const name = document.getElementById('cust-name').value;
+            const email = document.getElementById('cust-email').value;
+            const phone = document.getElementById('cust-phone').value;
+            const address = document.getElementById('cust-address').value;
+            
+            const plantCost = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+            const totalCost = plantCost + DELIVERY_CHARGE;
+            
+            try {
+                // 1. Send Order via Rest API
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    showToast("Session expired. Please log in again.", "error");
+                    setTimeout(() => window.location.href = "login.html", 1500);
+                    return;
+                }
+
+                const payload = {
+                    items: cart.map(item => ({
+                        id: item.id,
+                        name: item.name,
+                        price: item.price,
+                        quantity: item.quantity,
+                        imageUrl: item.imageUrl
+                    })),
+                    totalAmount: totalCost,
+                    customerDetails: {
+                        name,
+                        email,
+                        phone,
+                        address
+                    }
+                };
+
+                const res = await fetch(`${API_URL}/orders`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!res.ok) {
+                    const errorData = await res.json();
+                    showToast(errorData.message || "Failed to create order", "error");
+                    return;
+                }
+                
+                // 3. Clear Cart & Reset
+                cart = [];
+                saveCart();
+                updateCartUI();
+                checkoutModal.classList.remove('active');
+                showToast("Order placed successfully! We will contact you soon.", "success");
+                document.getElementById('checkout-form').reset();
+                
+                // 4. Force immediate UI refresh to show new stock/out-of-stock states
+                await fetchProducts(true);
+            } catch(error) {
+                console.error(error);
+                showToast("Order failed. Please try again.", "error");
+            } finally {
+                btn.innerHTML = "Confirm Order"; btn.disabled = false;
+            }
+        });
+
+    </script>
+</body>
+</html>

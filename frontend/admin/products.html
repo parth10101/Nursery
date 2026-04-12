@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Products | Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <img src="../SDG/images/logo/logo.png" alt="Logo" style="height: 32px; margin-right: 0.5rem; width: auto;"> Matoshree
+            </div>
+            <ul class="nav-links">
+                <li><a href="dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="addProduct.html"><i class="fa-solid fa-plus-circle"></i> Add Product</a></li>
+                <li><a href="products.html" class="active"><i class="fa-solid fa-boxes-stacked"></i> Manage Products</a></li>
+                <li><a href="orders.html"><i class="fa-solid fa-truck-fast"></i> Orders</a></li>
+                <li><a href="messages.html"><i class="fa-solid fa-envelope"></i> Messages</a></li>
+                <li><a href="gallery-manager.html"><i class="fa-solid fa-images"></i> Gallery</a></li>
+            </ul>
+            <button class="logout-btn-sidebar" onclick="window.logoutAdmin()">
+                <i class="fa-solid fa-sign-out-alt"></i> Logout
+            </button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-title">Manage Content</div>
+                <div class="user-profile">
+                    <span class="user-email" id="admin-user-email">...</span>
+                    <div class="avatar"><i class="fa-solid fa-user"></i></div>
+                </div>
+            </header>
+
+            <div class="page-content">
+                <div class="table-container">
+                    <table id="products-table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="products-tbody">
+                            <!-- JS Will Inject Rows -->
+                            <tr>
+                                <td colspan="6" class="empty-state">
+                                    <div class="spinner" style="margin: 0 auto;"></div>
+                                    <p>Loading products...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Edit Product Modal -->
+    <div class="modal" id="edit-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Product</h3>
+                <button class="close-btn" id="close-modal">&times;</button>
+            </div>
+            
+            <form id="edit-form">
+                <input type="hidden" id="edit-id">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="edit-name" class="form-control" required>
+                </div>
+                
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem;">
+                    <div class="form-group">
+                        <label>Price (₹)</label>
+                        <input type="number" id="edit-price" class="form-control" required min="1" step="any">
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Stock</label>
+                        <input type="number" id="edit-stock" class="form-control" required min="0">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="edit-category" class="form-control" required>
+                        <option value="Indoor">Indoor Plants</option>
+                        <option value="Outdoor">Outdoor Plants</option>
+                        <option value="Flowering">Flowering Plants</option>
+                        <option value="Medicinal">Medicinal Plants</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="edit-description" class="form-control" rows="4" placeholder="Update plant details..." required></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block">
+                    Update Product
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="auth.js"></script>
+    <script type="module">
+        import { listenToProducts, deleteProduct, editProduct } from "./product.js?v=2";
+        import { showToast } from "./admin.js?v=2";
+
+        const tbody = document.getElementById("products-tbody");
+        let productsData = []; // RAM copy for modal injection
+
+        // 1. Read Products (Realtime listener)
+        listenToProducts((products) => {
+            productsData = products; // Store for Edit usage
+            tbody.innerHTML = "";
+
+            if (products.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <i class="fa-solid fa-box-open"></i>
+                                <h3>No Products Found</h3>
+                                <p>Head over to 'Add Product' to start building your catalog.</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            products.forEach(p => {
+                const tr = document.createElement('tr');
+                
+                const stockBadge = Number(p.stock) < 10 
+                    ? `<span class="badge badge-red">${p.stock} Left</span>`
+                    : `<span class="badge badge-green">In Stock (${p.stock})</span>`;
+                
+                tr.innerHTML = `
+                    <td><img src="${p.imageUrl}" alt="${p.name}" class="product-img-cell"></td>
+                    <td style="font-weight: 500;">${p.name}</td>
+                    <td><span class="badge" style="background:#e2e8f0; color:#475569;">${p.category}</span></td>
+                    <td>₹${p.price}</td>
+                    <td>${stockBadge}</td>
+                    <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #64748b; font-size: 0.9em;" title="${p.description}">
+                        ${p.description}
+                    </td>
+                    <td class="action-buttons">
+                        <button class="btn btn-outline edit-btn" data-id="${p.id}" title="Edit">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <button class="btn btn-danger delete-btn" data-id="${p.id}" title="Delete">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Re-attach event listeners
+            attachActionListeners();
+        });
+
+        function attachActionListeners() {
+            // Delete Listeners
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const id = e.currentTarget.getAttribute('data-id');
+                    if (confirm("Are you sure you want to delete this product? This action cannot be undone.")) {
+                        try {
+                            await deleteProduct(id);
+                            showToast("Product deleted successfully", "success");
+                        } catch (error) {
+                            showToast(error.message, "error");
+                        }
+                    }
+                });
+            });
+
+            // Edit Window Listeners
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = e.currentTarget.getAttribute('data-id');
+                    const productObj = productsData.find(x => x.id === id);
+                    if(!productObj) return;
+
+                    // Populate fields
+                    document.getElementById('edit-id').value = productObj.id;
+                    document.getElementById('edit-name').value = productObj.name;
+                    document.getElementById('edit-price').value = productObj.price;
+                    document.getElementById('edit-stock').value = productObj.stock;
+                    document.getElementById('edit-category').value = productObj.category;
+                    document.getElementById('edit-description').value = productObj.description || "";
+
+                    // Show window
+                    document.getElementById('edit-modal').classList.add('active');
+                });
+            });
+        }
+
+        // Modal Logic
+        const modal = document.getElementById('edit-modal');
+        const closeBtn = document.getElementById('close-modal');
+
+        closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+
+        // Close on clicking outside window overlay
+        window.addEventListener('click', (e) => {
+            if(e.target === modal) modal.classList.remove('active');
+        });
+
+        // 2. Edit Setup Logic (Save)
+        document.getElementById('edit-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const id = document.getElementById('edit-id').value;
+            const updatedValues = {
+                name: document.getElementById('edit-name').value,
+                price: Number(document.getElementById('edit-price').value),
+                stock: Number(document.getElementById('edit-stock').value),
+                category: document.getElementById('edit-category').value,
+                description: document.getElementById('edit-description').value
+            };
+
+            try {
+                await editProduct(id, updatedValues);
+                showToast("Product updated successfully!", "success");
+                modal.classList.remove('active');
+            } catch (error) {
+                showToast("Failed to update: " + error.message, "error");
+            }
+        });
+
+    </script>
+</body>
+</html>

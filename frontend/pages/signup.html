@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Sign Up - Matoshree Nursery</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary-color: #2e7d32; --light-bg: #e8f5e9; --text-dark: #333; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+        body { background: linear-gradient(135deg, var(--light-bg) 0%, #f1f8e9 100%); display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .auth-wrapper { padding: 2rem; position: relative; z-index: 10; width: 100%; max-width: 450px; }
+        .auth-card { background: white; border-radius: 20px; padding: 3rem 2.5rem; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05); text-align: center; border: 1px solid rgba(255, 255, 255, 0.4); }
+        .auth-card h2 { color: var(--text-dark); font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 700; }
+        .auth-card p { color: #666; margin-bottom: 2rem; font-size: 0.95rem; }
+        .form-group { margin-bottom: 1.5rem; text-align: left; position: relative; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: #444; font-size: 0.9rem; }
+        .form-group input { width: 100%; padding: 1rem 1rem 1rem 2.8rem; border: 2px solid #edf2f7; border-radius: 12px; font-size: 1rem; transition: all 0.3s ease; background: #f8fafc; }
+        .form-group input:focus { border-color: var(--primary-color); outline: none; background: white; box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.1); }
+        .form-icon { position: absolute; left: 1rem; top: 2.65rem; color: #a0aec0; }
+        .btn-primary { background: var(--primary-color); color: white; width: 100%; padding: 1rem; border: none; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(46, 125, 50, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08); display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 1rem; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 7px 14px rgba(46, 125, 50, 0.2), 0 3px 6px rgba(0, 0, 0, 0.1); }
+        .error-message { background: #fee2e2; color: #dc2626; padding: 0.75rem; border-radius: 8px; font-size: 0.9rem; margin-bottom: 1.5rem; display: none; text-align: left; border-left: 4px solid #ef4444; }
+
+        .back-btn {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            background: white;
+            color: var(--primary-color);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.3s;
+            z-index: 100;
+        }
+        .back-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+
+        /* Mobile adjustment for back button */
+        @media(max-width: 768px) {
+            .back-btn { top: 1rem; left: 1rem; padding: 0.5rem 1rem; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn">
+        <i class="fa-solid fa-arrow-left"></i> Back to Home
+    </a>
+    
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div style="margin-bottom: 1.5rem;">
+                <img src="images/logo/logo.png" alt="Matoshree Nursery" style="max-height: 80px; width: auto;">
+            </div>
+            <h2>Create Account</h2>
+            <p>Register to purchase plants seamlessly</p>
+
+            <div class="error-message" id="error-msg"></div>
+
+            <form id="signupForm">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <i class="fa-solid fa-envelope form-icon"></i>
+                    <input type="email" id="email" required placeholder="you@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <i class="fa-solid fa-lock form-icon"></i>
+                    <input type="password" id="password" required placeholder="Create a password" minlength="6">
+                </div>
+                
+                <button type="submit" class="btn-primary" id="signup-btn">
+                    <span>Create Account</span>
+                    <i class="fa-solid fa-user-plus"></i>
+                </button>
+            </form>
+            
+            <p style="margin-top: 1.5rem; font-size: 0.9rem;">
+                Already have an account? <a href="login.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">Login here</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script>
+        const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && window.location.port !== '5000' ? 'http://localhost:5000/api' : '/api';
+
+        // If already logged in, go to home
+        async function checkAuth() {
+            const token = localStorage.getItem('token');
+            if(token) {
+                try {
+                    const res = await fetch(`${API_URL}/auth/me`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (res.ok) window.location.href = "plants.html";
+                } catch (err) {}
+            }
+        }
+        checkAuth();
+
+        document.getElementById("signupForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById("signup-btn");
+            const errBox = document.getElementById("error-msg");
+            errBox.style.display = "none";
+            
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Registering...`;
+            btn.style.opacity = "0.7";
+            btn.disabled = true;
+
+            try {
+                const email = document.getElementById("email").value;
+                const password = document.getElementById("password").value;
+                
+                const res = await fetch(`${API_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, role: 'customer' })
+                });
+
+                let data;
+                try {
+                    data = await res.json();
+                } catch (e) {
+                    throw new Error('Server returned an invalid response. Please try again.');
+                }
+
+                if (!res.ok) {
+                    throw new Error(data.message || 'Registration failed');
+                }
+
+                // Success - store token
+                localStorage.setItem('token', data.token);
+                window.location.href = "plants.html";
+            } catch (error) {
+                console.error(error);
+                errBox.innerText = error.message;
+                errBox.style.display = "block";
+                btn.innerHTML = `<span>Create Account</span> <i class="fa-solid fa-user-plus"></i>`;
+                btn.style.opacity = "1";
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
