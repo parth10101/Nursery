@@ -89,7 +89,7 @@ app.get('/', (req, res) => {
 app.use(express.static(pagesPath));
 
 // ─── Catch-all: unmatched routes → index.html ─────────────────────────────────
-app.get('*', (req, res) => {
+app.use((req, res) => {
     res.sendFile(path.join(pagesPath, 'index.html'));
 });
 
