@@ -1,37 +1,43 @@
 {
   "version": 2,
-  "rewrites": [
+  "builds": [
     {
-      "source": "/api/(.*)",
-      "destination": "backend/server.js"
+      "src": "backend/server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/backend/server.js"
     },
     {
-      "source": "/uploads/(.*)",
-      "destination": "backend/server.js"
+      "src": "/uploads/(.*)",
+      "dest": "/backend/server.js"
     },
     {
-      "source": "/admin/(.*)",
-      "destination": "frontend/admin/$1"
+      "src": "/admin/(.*)",
+      "dest": "/frontend/admin/$1"
     },
     {
-      "source": "/css/(.*)",
-      "destination": "frontend/pages/css/$1"
+      "src": "/css/(.*)",
+      "dest": "/frontend/pages/css/$1"
     },
     {
-      "source": "/js/(.*)",
-      "destination": "frontend/pages/js/$1"
+      "src": "/js/(.*)",
+      "dest": "/frontend/pages/js/$1"
     },
     {
-      "source": "/images/(.*)",
-      "destination": "frontend/pages/images/$1"
+      "src": "/images/(.*)",
+      "dest": "/frontend/pages/images/$1"
     },
     {
-      "source": "/",
-      "destination": "frontend/pages/index.html"
+      "src": "/",
+      "dest": "/frontend/pages/index.html"
     },
     {
-      "source": "/(.*)",
-      "destination": "frontend/pages/$1"
+      "src": "/(.*)",
+      "dest": "/frontend/pages/$1"
     }
   ]
 }
