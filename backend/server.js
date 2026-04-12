@@ -70,16 +70,27 @@ app.use(async (req, res, next) => {
     next();
 });
 
+// Paths
+const frontendPath = path.join(__dirname, '../frontend');
+const pagesPath = path.join(frontendPath, 'pages');
+const adminPath = path.join(frontendPath, 'admin');
+
+// Specific static routes for predictable asset loading
+app.use('/admin', express.static(adminPath));
+app.use('/css', express.static(path.join(pagesPath, 'css')));
+app.use('/js', express.static(path.join(pagesPath, 'js')));
+app.use('/images', express.static(path.join(pagesPath, 'images')));
+
 // Redirect root to pages/index.html
 app.get('/', (req, res) => {
-    res.redirect('/pages/index.html');
+    res.sendFile(path.join(pagesPath, 'index.html'));
 });
 
-// Serve uploaded gallery images
-app.use('/uploads', express.static(path.join(__dirname, '../frontend/uploads')));
+// Serve everything else from pages (public HTML files, videos etc)
+app.use(express.static(pagesPath));
 
-// Serve static frontend files
-app.use(express.static(path.join(__dirname, '../frontend')));
+// Serve uploaded gallery images
+app.use('/uploads', express.static(path.join(frontendPath, 'uploads')));
 
 // Export for Vercel
 module.exports = app;

@@ -10,16 +10,32 @@
       "destination": "backend/server.js"
     },
     {
+      "source": "/admin/(.*)",
+      "destination": "frontend/admin/$1"
+    },
+    {
+      "source": "/css/(.*)",
+      "destination": "frontend/pages/css/$1"
+    },
+    {
+      "source": "/js/(.*)",
+      "destination": "frontend/pages/js/$1"
+    },
+    {
+      "source": "/images/(.*)",
+      "destination": "frontend/pages/images/$1"
+    },
+    {
       "source": "/",
       "destination": "frontend/pages/index.html"
     },
     {
-      "source": "/admin",
-      "destination": "frontend/admin/dashboard.html"
+      "source": "/(.*\\.html)",
+      "destination": "frontend/pages/$1"
     },
     {
-      "source": "/(css|js|images|admin|pages|uploads)/(.*)",
-      "destination": "frontend/$1/$2"
+      "source": "/(.*\\.(mp4|webm|webp|jpg|jpeg|png|gif|svg|ico))",
+      "destination": "frontend/pages/$1"
     }
   ]
 }
