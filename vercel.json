@@ -30,11 +30,7 @@
       "destination": "frontend/pages/index.html"
     },
     {
-      "source": "/(.*\\.html)",
-      "destination": "frontend/pages/$1"
-    },
-    {
-      "source": "/(.*\\.(mp4|webm|webp|jpg|jpeg|png|gif|svg|ico))",
+      "source": "/(.*)",
       "destination": "frontend/pages/$1"
     }
   ]
