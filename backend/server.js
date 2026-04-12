@@ -43,7 +43,7 @@ app.use('/uploads', express.static(path.join(__dirname, '../frontend/uploads')))
 // Serve static frontend files
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-// Database Connection — connect first, then start server
+// Database Connection
 const Message = require('./models/Message');
 const mongooseOptions = {
     serverSelectionTimeoutMS: 10000,
@@ -51,27 +51,48 @@ const mongooseOptions = {
     family: 4, // Force IPv4
 };
 
-mongoose.connect(process.env.MONGODB_URI, mongooseOptions)
-  .then(async () => {
-      console.log('✅ Connected to MongoDB Atlas!');
-      const msgCount = await Message.countDocuments();
-      console.log(`📊 DB initialized with ${msgCount} customer messages.`);
+// Connect to MongoDB
+let isConnected = false;
+const connectDB = async () => {
+    if (isConnected) return;
+    try {
+        await mongoose.connect(process.env.MONGODB_URI, mongooseOptions);
+        isConnected = true;
+        console.log('✅ Connected to MongoDB Atlas!');
+    } catch (err) {
+        console.error('❌ MongoDB Connection ERROR:', err.message);
+    }
+};
 
-      // Start the server ONLY after DB is connected
-      app.listen(PORT, () => {
-          console.log(`\n🚀 Matoshree Nursery Server is LIVE!`);
-          console.log(`🔗 Click to visit: http://localhost:${PORT}`);
-          console.log(`\nPress Ctrl + C to stop the server\n`);
-      });
-  })
-  .catch(err => {
-      console.error('❌ MongoDB Connection ERROR:', err.message);
-      if (err.message.includes('SSL') || err.message.includes('ENOTFOUND') || err.message.includes('timed out')) {
-          console.log('\n💡 TIP: Your IP may not be whitelisted in MongoDB Atlas.');
-          console.log('Go to Atlas > Network Access > Add Current IP Address\n');
-      }
-      process.exit(1);
-  });
+// Middleware to ensure DB connection for Vercel
+app.use(async (req, res, next) => {
+    await connectDB();
+    next();
+});
+
+// Redirect root to pages/index.html
+app.get('/', (req, res) => {
+    res.redirect('/pages/index.html');
+});
+
+// Serve uploaded gallery images
+app.use('/uploads', express.static(path.join(__dirname, '../frontend/uploads')));
+
+// Serve static frontend files
+app.use(express.static(path.join(__dirname, '../frontend')));
+
+// Export for Vercel
+module.exports = app;
+
+// Start server ONLY if not running on Vercel
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+    connectDB().then(() => {
+        app.listen(PORT, () => {
+            console.log(`\n🚀 Matoshree Nursery Server is LIVE!`);
+            console.log(`🔗 Click to visit: http://localhost:${PORT}`);
+        });
+    });
+}
 
 mongoose.connection.on('error', err => {
     console.error('Mongoose connection error: ' + err.message);
