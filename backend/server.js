@@ -75,7 +75,6 @@ const frontendPath = path.join(__dirname, '../frontend');
 const pagesPath    = path.join(frontendPath, 'pages');
 const adminPath    = path.join(frontendPath, 'admin');
 
-app.use('/uploads', express.static(path.join(frontendPath, 'uploads')));
 app.use('/admin',   express.static(adminPath));
 app.use('/css',     express.static(path.join(pagesPath, 'css')));
 app.use('/js',      express.static(path.join(pagesPath, 'js')));

@@ -25,10 +25,6 @@
       "destination": "/frontend/admin/$1"
     },
     {
-      "source": "/uploads/(.*)",
-      "destination": "/frontend/uploads/$1"
-    },
-    {
       "source": "/(.*)",
       "destination": "/frontend/pages/$1"
     }
