@@ -23,7 +23,7 @@ const checkAuth = async () => {
                 localStorage.removeItem('token');
                 alert("Unauthorized access. You are not an admin.");
                 if (!isLoginPage) {
-                    window.location.href = "../pages/login.html"; // We also need to fix this if the path was wrong.
+                    window.location.href = "/login";
                 }
             } else {
                 // Is an admin
@@ -39,12 +39,12 @@ const checkAuth = async () => {
         } catch (error) {
             console.error("Error checking admin status:", error);
             localStorage.removeItem('token');
-            if (!isLoginPage) window.location.href = "../pages/login.html";
+            if (!isLoginPage) window.location.href = "/login";
         }
     } else {
         // User is not logged in
         if (!isLoginPage) {
-            window.location.href = "../pages/login.html";
+            window.location.href = "/login";
         }
     }
 };
@@ -55,7 +55,7 @@ checkAuth();
 export const handleLogout = async () => {
     try {
         localStorage.removeItem('token');
-        window.location.href = "../pages/login.html";
+        window.location.href = "/";
     } catch (error) {
         console.error("Logout Error", error);
         alert("Failed to logout");
