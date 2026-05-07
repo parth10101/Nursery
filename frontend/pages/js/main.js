@@ -502,9 +502,41 @@ async function handleContactForm(e) {
         message: formData.get('message') || document.getElementById('message')?.value || ''
     };
 
-    // Basic validation
-    if (!data.name || !data.email || !data.phone || !data.message) {
-        showNotification('Please fill in all required fields');
+    // Frontend Validation
+    const nameRegex  = /^[a-zA-Z\s]{2,}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[0-9]{10}$/;
+
+    if (!data.name.trim()) {
+        showNotification('❌ Please enter your name.');
+        return;
+    }
+    if (!nameRegex.test(data.name.trim())) {
+        showNotification('❌ Name must be at least 2 letters and contain only letters.');
+        return;
+    }
+    if (!data.email.trim()) {
+        showNotification('❌ Please enter your email address.');
+        return;
+    }
+    if (!emailRegex.test(data.email.trim())) {
+        showNotification('❌ Please enter a valid email address (e.g. you@example.com).');
+        return;
+    }
+    if (!data.phone.trim()) {
+        showNotification('❌ Please enter your phone number.');
+        return;
+    }
+    if (!phoneRegex.test(data.phone.trim())) {
+        showNotification('❌ Phone number must be exactly 10 digits (numbers only).');
+        return;
+    }
+    if (!data.message.trim()) {
+        showNotification('❌ Please enter your message.');
+        return;
+    }
+    if (data.message.trim().length < 10) {
+        showNotification('❌ Message must be at least 10 characters.');
         return;
     }
 
