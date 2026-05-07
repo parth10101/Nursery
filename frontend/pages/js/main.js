@@ -515,6 +515,10 @@ async function handleContactForm(e) {
         showNotification('❌ Name must be at least 2 letters and contain only letters.');
         return;
     }
+    if (data.name.trim().length > 50) {
+        showNotification('❌ Name must not exceed 50 characters.');
+        return;
+    }
     if (!data.email.trim()) {
         showNotification('❌ Please enter your email address.');
         return;
@@ -537,6 +541,10 @@ async function handleContactForm(e) {
     }
     if (data.message.trim().length < 10) {
         showNotification('❌ Message must be at least 10 characters.');
+        return;
+    }
+    if (data.message.trim().length > 500) {
+        showNotification('❌ Message must not exceed 500 characters.');
         return;
     }
 
