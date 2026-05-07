@@ -14,6 +14,7 @@ const orderSchema = new mongoose.Schema({
   totalAmount: { type: Number, required: true },
   customerDetails: {
     name: { type: String },
+    email: { type: String },
     phone: { type: String },
     address: { type: String }
   },

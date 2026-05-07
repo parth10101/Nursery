@@ -1032,14 +1032,30 @@
         
         document.getElementById('checkout-form').addEventListener('submit', async (e) => {
             e.preventDefault();
+
+            const name    = document.getElementById('cust-name').value.trim();
+            const email   = document.getElementById('cust-email').value.trim();
+            const phone   = document.getElementById('cust-phone').value.trim();
+            const address = document.getElementById('cust-address').value.trim();
+
+            // --- Frontend Validation ---
+            const nameRegex  = /^[a-zA-Z\s]{2,}$/;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const phoneRegex = /^[0-9]{10}$/;
+
+            if (!name) { showToast('Please enter your full name.', 'error'); return; }
+            if (!nameRegex.test(name)) { showToast('Name must be at least 2 letters (no numbers or symbols).', 'error'); return; }
+            if (!email) { showToast('Please enter your email address.', 'error'); return; }
+            if (!emailRegex.test(email)) { showToast('Please enter a valid email (e.g. you@example.com).', 'error'); return; }
+            if (!phone) { showToast('Please enter your phone number.', 'error'); return; }
+            if (!phoneRegex.test(phone)) { showToast('Phone number must be exactly 10 digits (numbers only).', 'error'); return; }
+            if (!address) { showToast('Please enter your delivery address.', 'error'); return; }
+            if (address.length < 10) { showToast('Please enter a complete delivery address.', 'error'); return; }
+            // --- End Validation ---
+
             const btn = document.getElementById('confirm-order-btn');
             btn.innerHTML = "Processing..."; btn.disabled = true;
 
-            const name = document.getElementById('cust-name').value;
-            const email = document.getElementById('cust-email').value;
-            const phone = document.getElementById('cust-phone').value;
-            const address = document.getElementById('cust-address').value;
-            
             const plantCost = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
             const totalCost = plantCost + DELIVERY_CHARGE;
             
