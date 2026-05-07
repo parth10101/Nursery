@@ -527,6 +527,10 @@ async function handleContactForm(e) {
         showNotification('❌ Please enter a valid email address (e.g. you@example.com).');
         return;
     }
+    if (data.email.trim().length > 50) {
+        showNotification('❌ Email must not exceed 50 characters.');
+        return;
+    }
     if (!data.phone.trim()) {
         showNotification('❌ Please enter your phone number.');
         return;

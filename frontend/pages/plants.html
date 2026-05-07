@@ -688,7 +688,7 @@
                 </div>
                 <div class="form-group">
                     <label>Email Address</label>
-                    <input type="email" id="cust-email" required placeholder="e.g. rajesh@email.com" maxlength="100">
+                    <input type="email" id="cust-email" required placeholder="e.g. rajesh@email.com" maxlength="50">
                 </div>
                 <div class="form-group">
                     <label>Phone Number</label>
@@ -1048,6 +1048,7 @@
             if (name.length > 50) { showToast('Full name must not exceed 50 characters.', 'error'); return; }
             if (!email) { showToast('Please enter your email address.', 'error'); return; }
             if (!emailRegex.test(email)) { showToast('Please enter a valid email (e.g. you@example.com).', 'error'); return; }
+            if (email.length > 50) { showToast('Email must not exceed 50 characters.', 'error'); return; }
             if (!phone) { showToast('Please enter your phone number.', 'error'); return; }
             if (!phoneRegex.test(phone)) { showToast('Phone number must be exactly 10 digits (numbers only).', 'error'); return; }
             if (!address) { showToast('Please enter your delivery address.', 'error'); return; }
