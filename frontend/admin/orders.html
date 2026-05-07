@@ -205,6 +205,7 @@
                 </div>
                 <div style="margin-bottom: 1rem;">
                     <strong>Email:</strong> ${order.customerDetails?.email || order.email || 'N/A'}<br>
+                    <strong>Phone:</strong> ${order.customerDetails?.phone || order.phone || 'N/A'}<br>
                     <strong>Time:</strong> ${new Date(order.createdAt).toLocaleString()}<br>
                 </div>
                 <h4 style="margin-bottom: 0.75rem;">Order Items</h4>
