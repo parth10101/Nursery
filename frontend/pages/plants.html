@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,9 @@
     <meta name="description" content="Browse our wide selection of plants and gardening products at Matoshree Nursery.">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Geom:ital,wght@0,300..900;1,300..900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Geom:ital,wght@0,300..900;1,300..900&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <style>
         /* Plants Page Specific Styles */
         .page-header {
@@ -21,9 +24,10 @@
             color: white;
             overflow: hidden;
             padding: 0 2rem;
-            margin-bottom: 4rem; /* Add space below hero section */
+            margin-bottom: 4rem;
+            /* Add space below hero section */
         }
-        
+
         .video-container {
             position: absolute;
             top: 0;
@@ -33,7 +37,7 @@
             overflow: hidden;
             z-index: 0;
         }
-        
+
         .video-container video {
             position: absolute;
             top: 50%;
@@ -49,6 +53,7 @@
             -webkit-perspective: 1000;
             perspective: 1000;
         }
+
         .hero-overlay {
             position: absolute;
             top: 0;
@@ -59,6 +64,7 @@
             z-index: 1;
             pointer-events: none;
         }
+
         .hero-content {
             position: relative;
             z-index: 2;
@@ -66,6 +72,7 @@
             margin: 0 auto;
             padding: 0 2rem;
         }
+
         .hero-title {
             font-family: 'Poppins', sans-serif;
             font-size: 4.5rem;
@@ -75,6 +82,7 @@
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
             animation: fadeInUp 1s ease-out;
         }
+
         .divider {
             width: 100px;
             height: 3px;
@@ -82,6 +90,7 @@
             margin: 0 auto 2rem;
             position: relative;
         }
+
         .divider:after {
             content: '';
             position: absolute;
@@ -91,6 +100,7 @@
             left: 20%;
             bottom: -8px;
         }
+
         .hero-subtitle {
             font-family: 'Poppins', sans-serif;
             font-size: 1.8rem;
@@ -103,6 +113,7 @@
             color: rgba(255, 255, 255, 0.9);
             animation: fadeInUp 1s ease-out 0.2s both;
         }
+
         .cta-button {
             display: inline-block;
             background: #2e7d32;
@@ -118,22 +129,26 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             animation: fadeInUp 1s ease-out 0.4s both;
         }
+
         .cta-button:hover {
             background: #1b5e20;
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
         }
+
         /* Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
+
         .header {
             position: absolute;
             top: 0;
@@ -144,18 +159,22 @@
             background: transparent;
             padding: 2rem 0;
         }
+
         .header.scrolled {
             position: fixed;
             background: rgba(255, 255, 255, 0.98);
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
             padding: 1rem 0;
         }
+
         .header.scrolled .nav-link {
             color: #333;
         }
+
         .header.scrolled .logo-img {
             height: 150px;
         }
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .page-header {
@@ -163,43 +182,49 @@
                 min-height: 350px;
                 margin-bottom: 3rem;
             }
+
             .hero-title {
                 font-size: 3.2rem;
             }
-            
+
             .hero-subtitle {
                 font-size: 1.6rem;
                 padding: 0 1rem;
             }
-            
+
             .cta-button {
                 padding: 1rem 2.5rem;
                 font-size: 1.4rem;
             }
         }
+
         @media (max-width: 480px) {
             .page-header {
                 height: 45vh;
                 min-height: 300px;
                 margin-bottom: 2.5rem;
             }
+
             .hero-title {
                 font-size: 2.6rem;
             }
+
             .filter-buttons {
                 gap: 0.8rem;
                 padding: 0 1rem;
                 margin: 2.5rem 0 3rem;
             }
+
             .category-btn {
                 padding: 0.7rem 1.5rem;
                 font-size: 1.3rem;
             }
-            
+
             .hero-subtitle {
                 font-size: 1.4rem;
             }
         }
+
         /* Filter Buttons */
         .filter-buttons {
             display: flex;
@@ -361,7 +386,7 @@
                 font-size: 1.4rem;
             }
         }
-        
+
         /* Shopping Cart & Modal Styles */
         .cart-toggle-btn {
             position: fixed;
@@ -376,12 +401,16 @@
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             cursor: pointer;
             z-index: 99;
             transition: transform 0.3s;
         }
-        .cart-toggle-btn:hover { transform: scale(1.1); }
+
+        .cart-toggle-btn:hover {
+            transform: scale(1.1);
+        }
+
         .cart-badge {
             position: absolute;
             top: -5px;
@@ -397,7 +426,7 @@
             justify-content: center;
             font-weight: bold;
         }
-        
+
         .cart-sidebar {
             position: fixed;
             top: 0;
@@ -406,13 +435,17 @@
             max-width: 400px;
             height: 100vh;
             background: white;
-            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
             z-index: 1001;
             transition: right 0.4s ease;
             display: flex;
             flex-direction: column;
         }
-        .cart-sidebar.open { right: 0; }
+
+        .cart-sidebar.open {
+            right: 0;
+        }
+
         .cart-header {
             padding: 1.5rem;
             border-bottom: 1px solid #eee;
@@ -420,12 +453,19 @@
             justify-content: space-between;
             align-items: center;
         }
-        .cart-close { font-size: 1.5rem; cursor: pointer; color: #666; }
+
+        .cart-close {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
         .cart-items-container {
             flex: 1;
             overflow-y: auto;
             padding: 1rem;
         }
+
         .cart-item {
             display: flex;
             gap: 1rem;
@@ -434,92 +474,212 @@
             border-radius: 8px;
             margin-bottom: 1rem;
         }
-        .cart-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 5px; }
-        .cart-item-details { flex: 1; }
-        .cart-item-details h4 { font-size: 1.2rem; margin-bottom: 0.2rem; color: #333; }
-        .cart-qty-ctrl { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem; }
-        .cart-qty-ctrl button { background: #ddd; border: none; width: 25px; height: 25px; border-radius: 50%; cursor: pointer; font-weight: bold; }
-        
-        .cart-footer { padding: 1.5rem; border-top: 1px solid #eee; background: #fff; }
-        .cart-total { display: flex; justify-content: space-between; font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem; }
-        
+
+        .cart-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-item-details h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.2rem;
+            color: #333;
+        }
+
+        .cart-qty-ctrl {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .cart-qty-ctrl button {
+            background: #ddd;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .cart-footer {
+            padding: 1.5rem;
+            border-top: 1px solid #eee;
+            background: #fff;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
         .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); z-index: 2000;
-            display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
         }
-        .modal-overlay.active { opacity: 1; pointer-events: all; }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
         .checkout-modal {
-            background: white; width: 90%; max-width: 500px; padding: 2.5rem;
-            border-radius: 10px; transform: scale(0.9); transition: transform 0.3s;
-            max-height: 90vh; overflow-y: auto;
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            padding: 2.5rem;
+            border-radius: 10px;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+            max-height: 90vh;
+            overflow-y: auto;
         }
-        .modal-overlay.active .checkout-modal { transform: scale(1); }
-        .checkout-modal h2 { font-size: 2rem; margin-bottom: 1.5rem; }
-        .form-group { margin-bottom: 1.5rem; }
-        .form-group label { display: block; font-size: 1.2rem; margin-bottom: 0.5rem; font-weight: 500;}
-        .form-group input, .form-group textarea {
-            width: 100%; padding: 1rem; border: 1px solid #ccc; border-radius: 5px; font-family: inherit; font-size: 1.1rem;
+
+        .modal-overlay.active .checkout-modal {
+            transform: scale(1);
         }
+
+        .checkout-modal h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: inherit;
+            font-size: 1.1rem;
+        }
+
         .order-summary {
-            background: #f8f9fa; border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
             border: 1px solid #e9ecef;
         }
+
         .order-summary h3 {
-            font-size: 1.4rem; margin-bottom: 1rem; color: #333;
-            padding-bottom: 0.8rem; border-bottom: 1px solid #dee2e6;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: #333;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid #dee2e6;
         }
+
         .summary-row {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0.6rem 0; font-size: 1.2rem; color: #555;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.6rem 0;
+            font-size: 1.2rem;
+            color: #555;
         }
+
         .summary-row.total {
-            border-top: 2px solid #27ae60; margin-top: 0.8rem; padding-top: 1rem;
-            font-size: 1.5rem; font-weight: 700; color: #27ae60;
+            border-top: 2px solid #27ae60;
+            margin-top: 0.8rem;
+            padding-top: 1rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #27ae60;
         }
+
         .payment-note {
-            background: #fff8e1; border: 1px solid #ffe082; border-radius: 8px;
-            padding: 1rem 1.2rem; margin: 1.5rem 0; display: flex; align-items: flex-start; gap: 0.8rem;
+            background: #fff8e1;
+            border: 1px solid #ffe082;
+            border-radius: 8px;
+            padding: 1rem 1.2rem;
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
         }
+
         /* Stock Status Styles */
-        .out-of-stock { 
-            filter: grayscale(100%) blur(0.5px); 
-            opacity: 0.6; 
+        .out-of-stock {
+            filter: grayscale(100%) blur(0.5px);
+            opacity: 0.6;
             transition: all 0.5s ease;
         }
-        .out-of-stock-badge { 
-            position: absolute; 
-            top: 1.5rem; 
-            right: 1.5rem; 
-            background: #2c3e50; 
-            color: white; 
-            padding: 0.6rem 1.4rem; 
-            border-radius: 6px; 
-            font-weight: 700; 
+
+        .out-of-stock-badge {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: #2c3e50;
+            color: white;
+            padding: 0.6rem 1.4rem;
+            border-radius: 6px;
+            font-weight: 700;
             font-size: 1.3rem;
             z-index: 10;
             text-transform: uppercase;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
-        .low-stock-badge { 
-            position: absolute; 
-            top: 1.5rem; 
-            right: 1.5rem; 
-            background: linear-gradient(135deg, #e74c3c, #c0392b); 
-            color: white; 
-            padding: 0.8rem 1.6rem; 
-            border-radius: 6px; 
-            font-weight: 800; 
-            font-size: 1.4rem; 
+
+        .low-stock-badge {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 0.8rem 1.6rem;
+            border-radius: 6px;
+            font-weight: 800;
+            font-size: 1.4rem;
             z-index: 10;
             box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
             animation: pulse 2s infinite;
         }
+
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
 
         /* Toast Notification System */
@@ -532,12 +692,13 @@
             flex-direction: column;
             gap: 1rem;
         }
+
         .toast {
             background: #fff;
             color: #333;
             padding: 1.2rem 2.5rem;
             border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             display: flex;
             align-items: center;
             gap: 1.2rem;
@@ -547,10 +708,22 @@
             transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             border-left: 5px solid var(--primary-color);
         }
-        .toast.show { transform: translateX(0); }
-        .toast.error { border-left-color: #e74c3c; }
-        .toast.success { border-left-color: #2ecc71; }
-        .toast i { font-size: 1.8rem; }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.error {
+            border-left-color: #e74c3c;
+        }
+
+        .toast.success {
+            border-left-color: #2ecc71;
+        }
+
+        .toast i {
+            font-size: 1.8rem;
+        }
 
         /* Description Truncation */
         .plant-desc {
@@ -559,7 +732,8 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
-            min-height: 3.6rem; /* Ensures consistent card height */
+            min-height: 3.6rem;
+            /* Ensures consistent card height */
             line-height: 1.8rem;
             margin: 0.8rem 0;
             color: #7f8c8d;
@@ -568,7 +742,7 @@
     </style>
     <script>
         // Navbar scroll effect
-        window.addEventListener('scroll', function() {
+        window.addEventListener('scroll', function () {
             const header = document.querySelector('.header');
             if (window.scrollY > 100) {
                 header.classList.add('scrolled');
@@ -587,10 +761,13 @@
         });
     </script>
 </head>
+
 <body class="plants-page">
     <!-- Toast Container -->
     <div id="toast-container"></div>
-    <!-- Header & Navigation -->
+    <!-- ========================================== -->
+    <!-- 🌐 NAVIGATION HEADER (Logo and Links) 🌐 -->
+    <!-- ========================================== -->
     <header class="header" id="header">
         <div class="container">
             <div class="logo-container">
@@ -616,7 +793,9 @@
         </div>
     </header>
 
-    <!-- Page Header -->
+    <!-- ========================================== -->
+    <!-- 🌟 HERO SECTION (Top Video and Title) 🌟 -->
+    <!-- ========================================== -->
     <section class="page-header">
         <div class="video-container">
             <video autoplay muted loop playsinline id="plants-video">
@@ -628,13 +807,16 @@
         <div class="hero-content">
             <h1 class="hero-title">Our Premium Plants Collection</h1>
             <div class="divider"></div>
-            <p class="hero-subtitle">Discover a wide variety of indoor and outdoor plants, carefully nurtured to bring life and beauty to your space.</p>
+            <p class="hero-subtitle">Discover a wide variety of indoor and outdoor plants, carefully nurtured to bring
+                life and beauty to your space.</p>
             <a href="#plants-grid" class="cta-button">Explore Plants</a>
         </div>
     </section>
 
     <div class="container">
-        <!-- Plants Filter -->
+        <!-- ========================================== -->
+        <!-- 🔍 PLANTS FILTER BUTTONS 🔍 -->
+        <!-- ========================================== -->
         <div class="filter-buttons">
             <button class="category-btn active" data-category="all">All Plants</button>
             <button class="category-btn" data-category="indoor">Indoor Plants</button>
@@ -643,11 +825,13 @@
             <button class="category-btn" data-category="medicinal">Medicinal Plants</button>
         </div>
 
-        <!-- Plants Grid -->
+        <!-- ========================================== -->
+        <!-- 🌿 PLANTS GRID (Dynamically Loaded) 🌿 -->
+        <!-- ========================================== -->
         <div class="plants-grid" id="plantContainer">
             <!-- Dynamic Injection -->
             <div style="grid-column: 1 / -1; text-align: center; padding: 4rem;">
-                <p style="font-size: 1.5rem; color: #666;">Loading plants from database...</p>
+                <p style="font-size: 1.5rem; color: #666;">Fetching fresh plants for you🌱...</p>
             </div>
         </div>
     </div>
@@ -677,7 +861,9 @@
         </div>
     </div>
 
-    <!-- Checkout Modal -->
+    <!-- ========================================== -->
+    <!-- 💳 CHECKOUT MODAL (Order Form) 💳 -->
+    <!-- ========================================== -->
     <div class="modal-overlay" id="checkout-modal-overlay">
         <div class="checkout-modal">
             <h2>Delivery Details</h2>
@@ -696,7 +882,8 @@
                 </div>
                 <div class="form-group">
                     <label>Delivery Address</label>
-                    <textarea id="cust-address" required rows="3" placeholder="Complete address including pincode" maxlength="300"></textarea>
+                    <textarea id="cust-address" required rows="3" placeholder="Complete address including pincode"
+                        maxlength="300"></textarea>
                 </div>
 
                 <!-- Order Price Summary -->
@@ -719,12 +906,15 @@
                 <!-- Payment Note -->
                 <div class="payment-note">
                     <i class="fa-solid fa-info-circle"></i>
-                    <p>Payment is accepted only via <strong>Cash on Delivery (COD)</strong> or <strong>UPI on Delivery</strong>. No advance payment is required.</p>
+                    <p>Payment is accepted only via <strong>Cash on Delivery (COD)</strong> or <strong>UPI on
+                            Delivery</strong>. No advance payment is required.</p>
                 </div>
 
                 <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
-                    <button type="button" class="btn-add-to-cart" id="cancel-checkout-btn" style="background: #ccc; color: #333;">Cancel</button>
-                    <button type="submit" class="btn-add-to-cart" id="confirm-order-btn" style="background: #27ae60;">Confirm Order</button>
+                    <button type="button" class="btn-add-to-cart" id="cancel-checkout-btn"
+                        style="background: #ccc; color: #333;">Cancel</button>
+                    <button type="submit" class="btn-add-to-cart" id="confirm-order-btn"
+                        style="background: #27ae60;">Confirm Order</button>
                 </div>
             </form>
         </div>
@@ -732,17 +922,22 @@
     </div>
 
     <!-- Call to Action -->
-    <section class="cta-section" style="background-color: #f8f9fa; padding: 8rem 0; text-align: center; margin-top: 5rem;">
+    <section class="cta-section"
+        style="background-color: #f8f9fa; padding: 8rem 0; text-align: center; margin-top: 5rem;">
         <div class="container">
-            <h2 style="font-size: 3.5rem; margin-bottom: 2rem; color: var(--text-dark);">Can't Find What You're Looking For?</h2>
-            <p style="font-size: 1.8rem; color: var(--text-light); max-width: 700px; margin: 0 auto 3rem;">Contact us for special orders or inquiries about specific plants.</p>
-            <a href="index.html#contact" class="btn" style="display: inline-block; background: var(--primary-color); color: white; padding: 1.2rem 3.5rem; border-radius: 50px; font-size: 1.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; text-decoration: none;">Contact Us</a>
+            <h2 style="font-size: 3.5rem; margin-bottom: 2rem; color: var(--text-dark);">Can't Find What You're Looking
+                For?</h2>
+            <p style="font-size: 1.8rem; color: var(--text-light); max-width: 700px; margin: 0 auto 3rem;">Contact us
+                for special orders or inquiries about specific plants.</p>
+            <a href="index.html#contact" class="btn"
+                style="display: inline-block; background: var(--primary-color); color: white; padding: 1.2rem 3.5rem; border-radius: 50px; font-size: 1.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; text-decoration: none;">Contact
+                Us</a>
         </div>
     </section>
 
     <!-- Footer -->
     <footer class="footer" style="background: #2c3e50; color: white; padding: 5rem 0 2rem; margin-top: 5rem;">
-        
+
     </footer>
 
     <script type="module">
@@ -751,7 +946,7 @@
         // UI toggles
         const currYearEl = document.getElementById('currentYear');
         if (currYearEl) currYearEl.textContent = new Date().getFullYear();
-        
+
         // Toast Helper
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
@@ -776,16 +971,16 @@
         // Cart State
         let cart = JSON.parse(localStorage.getItem('nursery_cart')) || [];
         function saveCart() { localStorage.setItem('nursery_cart', JSON.stringify(cart)); }
-        
+
         // Cart UI
         const cartToggle = document.getElementById('cart-toggle-btn');
         const cartSidebar = document.getElementById('cart-sidebar');
         const cartClose = document.getElementById('cart-close');
-        
+
         cartToggle.addEventListener('click', async () => {
-             // Sync stock before opening cart to ensure quantity controls are accurate
-             await fetchProducts(false); 
-             cartSidebar.classList.add('open');
+            // Sync stock before opening cart to ensure quantity controls are accurate
+            await fetchProducts(false);
+            cartSidebar.classList.add('open');
         });
         cartClose.addEventListener('click', () => cartSidebar.classList.remove('open'));
 
@@ -794,11 +989,11 @@
             const itemsContainer = document.getElementById('cart-items');
             const totalEl = document.getElementById('cart-total-price');
             const checkoutBtn = document.getElementById('checkout-btn');
-            
+
             let totalQty = 0;
             let totalPrice = 0;
             itemsContainer.innerHTML = '';
-            
+
             if (cart.length === 0) {
                 itemsContainer.innerHTML = '<p style="text-align: center; color: #777; margin-top: 2rem;">Your cart is empty.</p>';
                 checkoutBtn.disabled = true;
@@ -811,7 +1006,7 @@
                     const qty = Number(item.quantity) || 1;
                     totalQty += qty;
                     totalPrice += item.price * qty;
-                    
+
                     itemsContainer.innerHTML += `
                         <div class="cart-item">
                             <img src="${item.imageUrl}" alt="${item.name}">
@@ -848,7 +1043,7 @@
             const item = cart[index];
             const currentQty = Number(item.quantity) || 1;
             const newQty = currentQty + change;
-            
+
             if (newQty <= 0) {
                 // '-' button pressed at qty=1 → remove item
                 cart.splice(index, 1);
@@ -878,12 +1073,12 @@
             const existing = cart.find(c => c.id === id);
             if (existing) {
                 const currentQty = Number(existing.quantity) || 1;
-                if (currentQty < liveStock) { 
+                if (currentQty < liveStock) {
                     existing.quantity = currentQty + 1;
                     showToast(`Updated quantity for ${name}`);
-                } else { 
-                    showToast(`Limit reached: Only ${liveStock} available.`, "error"); 
-                    return; 
+                } else {
+                    showToast(`Limit reached: Only ${liveStock} available.`, "error");
+                    return;
                 }
             } else {
                 // Initialize with quantity=1 (never qty, never undefined)
@@ -901,24 +1096,24 @@
             try {
                 const res = await fetch(`${API_URL}/products`);
                 const rawData = await res.json();
-                
+
                 // CRUCIAL: Map _id to id to prevent 'Sold Out' logic errors
                 productsData = rawData.map(p => ({ ...p, id: p._id }));
-                
+
                 console.log("Fetched products:", productsData);
-                
+
                 // Keep product listener updated
                 if (shouldRender) {
                     const activeBtn = document.querySelector('.category-btn.active');
                     const activeCat = activeBtn ? activeBtn.getAttribute('data-category') : 'all';
                     renderPlants(activeCat);
                 }
-                updateCartUI(); 
+                updateCartUI();
             } catch (err) {
                 console.error("Error fetching products", err);
             }
         }
-        
+
         // Initial fetch
         fetchProducts();
 
@@ -927,21 +1122,21 @@
 
         function renderPlants(filterCategory) {
             plantContainer.innerHTML = '';
-            
-            const filtered = filterCategory === 'all' 
-                ? productsData 
+
+            const filtered = filterCategory === 'all'
+                ? productsData
                 : productsData.filter(p => p.category.toLowerCase() === filterCategory.toLowerCase());
-                
-            if(filtered.length === 0) {
+
+            if (filtered.length === 0) {
                 plantContainer.innerHTML = '<p style="grid-column: 1/-1; text-align:center; font-size:1.5rem; color:#666;">No plants found in this category.</p>';
                 return;
             }
-            
+
             filtered.forEach(p => {
                 const stock = Number(p.stock);
                 const isOutOfStock = stock <= 0;
                 const isLowStock = !isOutOfStock && stock <= 10;
-                
+
                 const cardClass = isOutOfStock ? "plant-card out-of-stock" : "plant-card";
                 let badgeHtml = "";
                 if (isOutOfStock) {
@@ -951,7 +1146,7 @@
                     badgeHtml = `<div class="low-stock-badge">${stockText}</div>`;
                 }
 
-                const btnHtml = isOutOfStock 
+                const btnHtml = isOutOfStock
                     ? `<button class="btn-add-to-cart" disabled style="background:#bdc3c7; cursor:not-allowed;">Sold Out</button>`
                     : `<button class="btn-add-to-cart" onclick="window.addToCart('${p.id}', '${p.name}', ${p.price}, '${p.imageUrl}')">Add to Cart</button>`;
 
@@ -985,61 +1180,61 @@
 
         // Checkout Logic
         import { initCustomerAuth } from "./auth.js";
-        
+
         let currentUser = null;
         initCustomerAuth(user => { currentUser = user; });
 
         const checkoutModal = document.getElementById('checkout-modal-overlay');
         const DELIVERY_CHARGE = 500;
         document.getElementById('checkout-btn').addEventListener('click', async () => {
-             if (!currentUser) {
-                 showToast("Please login to place an order", "error");
-                 setTimeout(() => window.location.href = "login.html", 1500);
-                 return;
-             }
+            if (!currentUser) {
+                showToast("Please login to place an order", "error");
+                setTimeout(() => window.location.href = "login.html", 1500);
+                return;
+            }
 
-             // 2. Final Sync Check before showing modal
-             await fetchProducts(false);
+            // 2. Final Sync Check before showing modal
+            await fetchProducts(false);
 
-             // Re-verify the whole cart against fresh stock data
-             for (const item of cart) {
-                 const liveStock = getLiveStock(item.id);
-                 if (item.qty > liveStock) {
-                     showToast(`Stock updated for ${item.name}. Now ${liveStock} available.`, 'error');
-                     item.qty = Math.max(0, liveStock);
-                     if (item.qty === 0) {
-                         cart = cart.filter(c => c.id !== item.id);
-                     }
-                     saveCart();
-                     updateCartUI();
-                     return; // stop and let user see the update
-                 }
-             }
+            // Re-verify the whole cart against fresh stock data
+            for (const item of cart) {
+                const liveStock = getLiveStock(item.id);
+                if (item.qty > liveStock) {
+                    showToast(`Stock updated for ${item.name}. Now ${liveStock} available.`, 'error');
+                    item.qty = Math.max(0, liveStock);
+                    if (item.qty === 0) {
+                        cart = cart.filter(c => c.id !== item.id);
+                    }
+                    saveCart();
+                    updateCartUI();
+                    return; // stop and let user see the update
+                }
+            }
 
-             if (cart.length === 0) {
+            if (cart.length === 0) {
                 showToast("Your cart is empty or out of stock.", "error");
                 return;
-             }
+            }
 
-             // Populate order summary prices
-             const plantPrice = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-             document.getElementById('summary-plant-price').textContent = '₹' + plantPrice;
-             document.getElementById('summary-total').textContent = '₹' + (plantPrice + DELIVERY_CHARGE);
-             checkoutModal.classList.add('active');
-             cartSidebar.classList.remove('open');
+            // Populate order summary prices
+            const plantPrice = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+            document.getElementById('summary-plant-price').textContent = '₹' + plantPrice;
+            document.getElementById('summary-total').textContent = '₹' + (plantPrice + DELIVERY_CHARGE);
+            checkoutModal.classList.add('active');
+            cartSidebar.classList.remove('open');
         });
         document.getElementById('cancel-checkout-btn').addEventListener('click', () => checkoutModal.classList.remove('active'));
-        
+
         document.getElementById('checkout-form').addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const name    = document.getElementById('cust-name').value.trim();
-            const email   = document.getElementById('cust-email').value.trim();
-            const phone   = document.getElementById('cust-phone').value.trim();
+            const name = document.getElementById('cust-name').value.trim();
+            const email = document.getElementById('cust-email').value.trim();
+            const phone = document.getElementById('cust-phone').value.trim();
             const address = document.getElementById('cust-address').value.trim();
 
             // --- Frontend Validation ---
-            const nameRegex  = /^[a-zA-Z\s]{2,}$/;
+            const nameRegex = /^[a-zA-Z\s]{2,}$/;
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             const phoneRegex = /^[0-9]{10}$/;
 
@@ -1061,7 +1256,7 @@
 
             const plantCost = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
             const totalCost = plantCost + DELIVERY_CHARGE;
-            
+
             try {
                 // 1. Send Order via Rest API
                 const token = localStorage.getItem('token');
@@ -1090,7 +1285,7 @@
 
                 const res = await fetch(`${API_URL}/orders`, {
                     method: 'POST',
-                    headers: { 
+                    headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
@@ -1102,7 +1297,7 @@
                     showToast(errorData.message || "Failed to create order", "error");
                     return;
                 }
-                
+
                 // 3. Clear Cart & Reset
                 cart = [];
                 saveCart();
@@ -1110,10 +1305,10 @@
                 checkoutModal.classList.remove('active');
                 showToast("Order placed successfully! We will contact you soon.", "success");
                 document.getElementById('checkout-form').reset();
-                
+
                 // 4. Force immediate UI refresh to show new stock/out-of-stock states
                 await fetchProducts(true);
-            } catch(error) {
+            } catch (error) {
                 console.error(error);
                 showToast("Order failed. Please try again.", "error");
             } finally {
@@ -1123,4 +1318,5 @@
 
     </script>
 </body>
+
 </html>
